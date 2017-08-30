@@ -1,8 +1,47 @@
+/*
+	MedImage Resizing Add-on
+
+	This script should sit in the addons/resize folder inside the MedImage Server directory,
+	and is called by the MedImage Server (ver >= 0.8.0) once a photo is written. It resizes the image
+	and writes the resulting new image into the same folder.
+	
+	The MedImage addons/config.json should have a new 'photoWritten' event entry like below;
+	
+	{
+        "events": {
+                "photoWritten": [
+                        {
+                                "addon": "Resize",
+                                "runProcess": "node addons/resize/resize.js param1",
+                                "active": true
+                        }
+                ]
+        }
+    }
+    
+    The configuration parameters are as follows:
+    {
+		"incomingStringToReplace": ".jpg",			- this is the string in the incoming filename to replace
+		"currentFileRenamed": null,					- the current filename has the 'incomingStringToReplace' string replaced to this
+														- a 'null' means no change. [currentFileRenamed is currently not supported] 
+		"newFileRenamed": "-small.jpg",				- the new filename has the 'incomingStringToReplace' string replaced to this
+													- and is created
+		"width": 1200,								- the width of the new photo files in pixels. "auto" means it is
+														- scaled proportionally to the original photo and the 'height' param
+		"height": "auto",							- the height of the new photo files in pixels."auto" means it is
+														- scaled proportionally to the original photo and the 'width' param
+		"quality": 90								- the output .jpg quality from 0 - 100 %
+	}
+
+	
+	
+*/
 var jimp = require("jimp");
 var fs = require("fs");
 
-
+//Globals
 var resizeConfigFile = __dirname + '/config/resize.json';
+var mainMedImagePath = "../../photos/";
 
 
 function readConfig(confFile, cb) {
@@ -27,8 +66,7 @@ function readConfig(confFile, cb) {
 
 if(process.argv[2]) {
 
-
-	var photoFileName = process.argv[2]; 
+  	var photoFileName = upath.normalize(__dirname + "/" + mainMedImagePath + process.argv[2]);
  	var readConfigFile = resizeConfigFile;
  
  	//Read the config
@@ -68,7 +106,7 @@ if(process.argv[2]) {
 				}
 	});
 } else {
-	console.log("Usage: node photofile.jpg");
+	console.log("Usage: node path/to/photofile.jpg");
 
 }
  	

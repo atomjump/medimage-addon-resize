@@ -84,6 +84,7 @@ if(process.argv[2]) {
 			   	   			   
 			   	   var inputPhotoFileRenamed = photoFileName;		//Currently don't support renaming original file
 				   var outputPhotoFile = photoFileName.replace(conf.incomingStringToReplace, conf.newFileRenamed);
+				   console.log("Trying to create resized file:" + outputPhotoFile);
 				   
 				   var width = conf.width;
 				   if(width === "auto") {
@@ -103,9 +104,11 @@ if(process.argv[2]) {
 						photo.resize(width, height)            // resize 
 							 .quality(conf.quality)                 // set JPEG quality 
 							 .write(outputPhotoFile); // save 
+						
+						console.log("Success resizing photo file!");
 							 
-							 
-						//TODO: backup the created files with backupFiles:
+						//Backup the created files
+						console.log("backupFiles:" + outputPhotoFile);
 				   });
 				   
 				   

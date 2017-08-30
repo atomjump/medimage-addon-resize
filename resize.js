@@ -40,6 +40,8 @@ var jimp = require("jimp");
 var fs = require("fs");
 var upath = require("upath");
 
+var verbose = false;
+
 //Globals
 var resizeConfigFile = __dirname + '/config/resize.json';
 var mainMedImagePath = "../../photos/";
@@ -70,7 +72,7 @@ if(process.argv[2]) {
   	var photoFileName = upath.normalize(process.argv[2]);
  	var readConfigFile = resizeConfigFile;
  	
- 	console.log("Resizing photo file: " + photoFileName);
+ 	if(verbose == true) console.log("Resizing photo file: " + photoFileName);
  
  	//Read the config
  	readConfig(readConfigFile, function(conf, err) {
@@ -84,7 +86,7 @@ if(process.argv[2]) {
 			   	   			   
 			   	   var inputPhotoFileRenamed = photoFileName;		//Currently don't support renaming original file
 				   var outputPhotoFile = photoFileName.replace(conf.incomingStringToReplace, conf.newFileRenamed);
-				   console.log("Trying to create resized file:" + outputPhotoFile);
+				   if(verbose == true) console.log("Trying to create resized file:" + outputPhotoFile);
 				   
 				   var width = conf.width;
 				   if(width === "auto") {

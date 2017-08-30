@@ -1,0 +1,22 @@
+{
+  "author": "AtomJump.com",
+  "name": "medimage-addon-resize",
+  "description": "An add-on to MedImage Server that automatically resizes images after they appear on the PC",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "install": ""
+  },
+  "dependencies": {
+    "jimp": "*"
+  },
+  "repository" : { 
+     "type" : "git",
+     "url" : "https://github.com/atomjump/medimage-addon-resize.git"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">=4.2"
+  },
+  "license" : "SEE LICENSE IN http://medimage.co.nz/guide/#license"
+}

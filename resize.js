@@ -38,6 +38,7 @@
 */
 var jimp = require("jimp");
 var fs = require("fs");
+var upath = require("upath");
 
 //Globals
 var resizeConfigFile = __dirname + '/config/resize.json';
@@ -102,6 +103,9 @@ if(process.argv[2]) {
 						photo.resize(width, height)            // resize 
 							 .quality(conf.quality)                 // set JPEG quality 
 							 .write(outputPhotoFile); // save 
+							 
+							 
+						//TODO: backup the created files with backupFiles:
 				   });
 				   
 				   

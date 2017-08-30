@@ -8,7 +8,8 @@
     "install": ""
   },
   "dependencies": {
-    "jimp": "*"
+    "jimp": "*",
+    "upath": "*"
   },
   "repository" : { 
      "type" : "git",

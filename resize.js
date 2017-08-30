@@ -67,7 +67,7 @@ function readConfig(confFile, cb) {
 
 if(process.argv[2]) {
 
-  	var photoFileName = upath.normalize(__dirname + "/" + mainMedImagePath + process.argv[2]);
+  	var photoFileName = upath.normalize(process.argv[2]);
  	var readConfigFile = resizeConfigFile;
  	
  	console.log("Resizing photo file: " + photoFileName);

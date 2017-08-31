@@ -143,14 +143,14 @@ function changeLocalConfig(configContents, opts)
 		configContents.width = 1200;
 	}
 	if(opts.width) {
-		configContents.width = opts.width;
+		configContents.width = parseInt(opts.width);
 	}
 	
 	if(!configContents.height) {
 		configContents.height = "auto";
 	}
 	if(opts.height) {
-		configContents.height = opts.height;
+		configContents.height = parseInt(opts.height);
 	}
 	
 	if(!configContents.quality) {

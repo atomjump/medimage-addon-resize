@@ -90,7 +90,7 @@ begin
 
   //Get previous data if it exists
   DefaultDir := GetPreviousData('Directory1', DefaultDir);
-  Message := 'App users can create subfolders in this folder, which defaults to a folder on your desktop called "MedImage".';
+  Message := '';
     
   
   // create a directory input page
@@ -116,14 +116,10 @@ end;
 
 
 procedure BeforeMyProgInstall(S: String);
-var
-  ResultCode: Integer;
 begin
 end;
 
 procedure DeinitializeSetup();
-var
-  ResultCode: Integer;
 begin
   //Restart any existing services stopped in the BeforeMyProgInstall
 end;
@@ -137,12 +133,12 @@ begin
     begin
         if not (ResultCode = 0) then   
         begin
-            MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '. Your pictures will appear in C:\MedImage\photos. You can still try adding your folder manually to the file C:\MedImage\addons\resize, or try re-installing.', mbCriticalError, MB_OK);
+            MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '.', mbCriticalError, MB_OK);
         end;
     end
     else 
     begin
-        MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '. Your pictures will appear in C:\MedImage\photos. You can still try adding your folder manually to the file C:\MedImage\addons\resize, or try re-installing.', mbCriticalError, MB_OK);
+        MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '.', mbCriticalError, MB_OK);
     end;
 end;
 

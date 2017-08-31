@@ -268,8 +268,34 @@ if(process.argv[2]) {
 			//Read the medImage AddonConfig
 			readConfig(medImageAddonConfig, function(parentConfigContents, err) {
 				if(err) {
-					console.log("Error loading the master add-on config file:" + err); 
-					callback(err);
+				
+					//OK check if the file even exists - if it doesn't continue on to create one
+					fs.lstat( thisAddOnConfigFile, function (err, inodeStatus) {
+						  if (err) {
+
+							// file does not exist-
+							if (err.code === 'ENOENT' ) {
+							  console.log("Error loading the master add-on config file. Will try creating one:" + err); 
+							  
+							  //Add in the data
+							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
+							  callback(null, parentConfigContents);		//So continue
+							  
+							} else {
+
+								// miscellaneous error (e.g. permissions)
+								console.log("Error loading the master add-on config file:" + err); 
+								callback(err, null);
+							}
+						  } else {
+						  	//All good with the file, so we don't want to overwrite it. Stop here.
+						  	console.log("Error loading the master add-on config file:" + err); 
+							callback(err, null);
+						  
+						  }
+					});
+				
+				
 				} else {
 					if((opts.prepend)&&(opts.prepend === "true")) {
 						var prepend = true;
@@ -302,8 +328,10 @@ if(process.argv[2]) {
 		// result now equals 'done'
 		if(err) {
 			console.log("The installation was not complete.");
+			process.exit(1);
 		} else {
 			console.log("The installation was completed successfully!");
+			process.exit(0);
 		}
 	});
 

@@ -277,6 +277,16 @@ if(process.argv[2]) {
 							if (err.code === 'ENOENT' ) {
 							  console.log("Error loading the master add-on config file. Will try creating one:" + err); 
 							  
+							  parentConfigContents = {
+								"events": {
+									"photoWritten": [
+									],
+									"urlRequest": [
+									]
+								}
+							  }
+							  
+							  
 							  //Add in the data
 							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
 							  callback(null, parentConfigContents);		//So continue

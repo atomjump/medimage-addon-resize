@@ -219,6 +219,9 @@ if(process.argv[2]) {
 							// file does not exist-
 							if (err.code === 'ENOENT' ) {
 							  console.log("Error loading the add-on's own config file. Will try creating one:" + err); 
+							  
+							  //Add in the data
+							  childConfigContents = changeLocalConfig(childConfigContents, opts);
 							  callback(null, childConfigContents);		//So continue
 							  
 							} else {

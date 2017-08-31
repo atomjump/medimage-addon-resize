@@ -36,7 +36,7 @@ var pagesToInsert = [
 var htmlToInsert = [
 		{
 			"file": __dirname + "/../../public/components/header.html",
-			"jQuery": "$('#side-menu').append('<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>');"
+			"jQuery": "$('#side-menu').append(\"<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>\");",
 		}
 	];
 
@@ -379,7 +379,8 @@ if(process.argv[2]) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
 				
 				const $ = cheerio.load(htmlSource);
-				$('#side-menu').append("<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"),
+				htmlToInsert[cnt].jQuery;
+				//$('#side-menu').append("<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"),
 
 				console.log("New HTML:" + $.html());
 				//TEMPOUTfs.writeFileSync(htmlToInsert[cnt].file, $.html());

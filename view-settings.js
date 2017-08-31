@@ -4,6 +4,8 @@
 
 */
 
+var fs = require('fs');
+
 var verbose = false;
 
 //Globals

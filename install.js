@@ -277,7 +277,7 @@ if(process.argv[2]) {
 							if (err.code === 'ENOENT' ) {
 							  console.log("Error loading the master add-on config file. Will try creating one:" + err); 
 							  
-							  parentConfigContents = {
+							  var parentConfigContents = {
 								"events": {
 									"photoWritten": [
 									],

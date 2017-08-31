@@ -87,8 +87,6 @@ end;
 
 procedure RegisterPreviousData(PreviousDataKey: Integer);
 begin
-  // store chosen directories for the next run of the setup
-  SetPreviousData(PreviousDataKey, 'Directory1', DirPage.Values[0]);
 end;
 
 

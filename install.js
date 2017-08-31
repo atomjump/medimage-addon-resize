@@ -376,17 +376,24 @@ if(process.argv[2]) {
 			//And add any menus or any other html pages that need to be adjusted
 			for(cnt=0; cnt< htmlToInsert.length; cnt++) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
-				call_jsdom(htmlSource, function (window) {
-					var $ = window.$;
-
-
-					htmlToInsert[cnt].jQuery();
-					//E.g. var title = $("title").text();
-					//E.g. $("h1").text(title);
-
-					console.log(documentToSource(window.document));
-					fs.writeFileSync(htmlToInsert[cnt].file, documentToSource(window.document));
-				});
+				
+				jsdom.env(
+				  htmlSource,
+				  ["http://code.jquery.com/jquery.js"],
+				  function (errors, window) {
+					
+					console.log("contents of jQuery side menu" + window.$('#side-menu').html());
+				  	
+				  	//htmlToInsert[cnt].jQuery;
+				  	
+				  	fs.writeFileSync(htmlToInsert[cnt].file, htmlSource);
+				  
+				  }
+				);
+				
+				
+				
+				
 			}
 			callback(null);
 		}

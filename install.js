@@ -21,8 +21,8 @@ var async = require("async");
 var queryString = require('querystring');
 var fs = require('fs');
 
-var thisAddOnConfigFile = 'config/resize.json';
-var medImageAddonConfig = "../config.json";
+var thisAddOnConfigFile = __dirname + '/config/resize.json';
+var medImageAddonConfig = __dirname + "/../config.json";
 var thisAppEventPhotoWritten = [{
                                 "addon": "Resize",
                                 "runProcess": "node addons/resize/resize.js param1",

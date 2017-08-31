@@ -406,7 +406,7 @@ if(process.argv[2]) {
 				
 					
 					if(htmlToInsert[cnt].append) {
-						if($.find(htmlToInsert[cnt].selector).length == 0) {
+						if($(htmlToInsert[cnt].selector).is() == false) {
 							//Only insert if not already there
 							$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
 						}

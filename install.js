@@ -21,7 +21,7 @@ var async = require("async");
 var queryString = require('querystring');
 var fs = require('fs');
 var fsExtra = require('fs-extra');
-var jsdom = require("jsdom");
+const cheerio = require('cheerio');
 
 var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";
@@ -378,23 +378,12 @@ if(process.argv[2]) {
 			for(cnt=0; cnt< htmlToInsert.length; cnt++) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
 				
-				jsdom.env(
-				  htmlSource,
-				  ["http://code.jquery.com/jquery.js"],
-				  function (errors, window) {
-					
-					console.log("contents of jQuery side menu" + window.$('#side-menu').html());
-				  	
-				  	//htmlToInsert[cnt].jQuery;
-				  	
-				  	fs.writeFileSync(htmlToInsert[cnt].file, htmlSource);
-				  
-				  }
-				);
-				
-				
-				
-				
+				const $ = cheerio.load(htmlSource);
+				$('#side-menu').append("<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"),
+
+				console.log("New HTML:" + $.html());
+				//TEMPOUTfs.writeFileSync(htmlToInsert[cnt].file, $.html());
+											
 			}
 			callback(null);
 		}

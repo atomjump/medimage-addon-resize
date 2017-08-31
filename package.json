@@ -11,7 +11,9 @@
     "jimp": "*",
     "upath": "*",
     "querystring": "*",
-    "async": "*"
+    "async": "*",
+    "fs-extra": "*",
+    "jsdom": "*"    
   },
   "repository" : { 
      "type" : "git",

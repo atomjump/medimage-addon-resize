@@ -20,14 +20,41 @@
 var async = require("async");
 var queryString = require('querystring');
 var fs = require('fs');
+var fsExtra = require('fs-extra');
 
 var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";
-var thisAppEventPhotoWritten = [{
-                                "addon": "Resize",
-                                "runProcess": "node parentdir/addons/resize/resize.js param1",
-                                "active": true
-                       		 }];
+
+var pagesToInsert = [
+		{
+			"from": __dirname + "/pages/addon-settings.html",
+			"to": __dirname + "/../../public/pages/addon-settings.html"
+		}
+	];
+	
+var htmlToInsert = [
+		{
+			"file": __dirname + "/../../public/components/header.html",
+			"jQuery": "$('#side-menu').append('<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>');";
+		}
+	];
+
+var thisAppEventPhotoWritten = [
+									{
+										"addon": "Resize",
+										"runProcess": "node parentdir/addons/resize/resize.js param1",
+										"active": true
+									 }
+                       		 	];
+var thisAppEventURLRequest = [
+                               {
+									"addon": "Resize",
+									"scriptURLName": "resize-set",
+									"runProcess": "node parentdir/addons/resize/install.js param1",
+									"waitForRequestFinish":  "addon-settings.html",
+									"active": true
+								}
+                       		 ];
 
 
 function readConfig(confFile, cb) {
@@ -289,6 +316,8 @@ if(process.argv[2]) {
 							  
 							  //Add in the data
 							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
+							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest", prepend);
+							  
 							  callback(null, parentConfigContents);		//So continue
 							  
 							} else {
@@ -315,7 +344,8 @@ if(process.argv[2]) {
 		
 					//Modify the addon config for the master server
 					parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
-				
+					parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest", prepend);
+							  
 					callback(null, parentConfigContents);				
 				}
 				
@@ -333,7 +363,33 @@ if(process.argv[2]) {
 					callback(null);
 				}			
 			});
+		},
+		function(parentConfigContents, callback) {
+			//Copy across any pages that need inserting
+			for(cnt=0; cnt< pagesToInsert.length; cnt++) {
+				fsExtra.copySync(pagesToInsert[cnt].from, pagesToInsert[cnt].to);
+			}
+			callback(null);
+		},
+		function(parentConfigContents, callback) {
+			//And add any menus or any other html pages that need to be adjusted
+			for(cnt=0; cnt< htmlToInsert.length; cnt++) {
+				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
+				call_jsdom(htmlSource, function (window) {
+					var $ = window.$;
+
+
+					htmlToInsert[cnt].jQuery();
+					//E.g. var title = $("title").text();
+					//E.g. $("h1").text(title);
+
+					console.log(documentToSource(window.document));
+					fs.writeFileSync(htmlToInsert[cnt].file, documentToSource(window.document));
+				});
+			}
+			callback(null);
 		}
+		
 	], function (err, result) {
 		// result now equals 'done'
 		if(err) {

@@ -48,6 +48,7 @@ var htmlToInsert = [
 		{
 			"file": __dirname + "/../../public/components/header.html",
 			"selector": "#side-menu",
+			"id": "settings",
 			"append": "<li id='settings'><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"
 		},
 		
@@ -450,7 +451,8 @@ if(process.argv[2]) {
 				
 					
 					if(htmlToInsert[cnt].append) {
-						if($(htmlToInsert[cnt].selector).is() == false) {
+						console.log("Check exists id:" + htmlToInsert[cnt].id + ": " + $(htmlToInsert[cnt].id).is());
+						if($(htmlToInsert[cnt].id).is() == false) {
 							//Only insert if not already there
 							$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
 						}

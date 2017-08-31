@@ -181,7 +181,7 @@ if(process.argv[2]) {
 			});
 		},
 		function(err, callback) {
-			saveConfig(thisAddOnConfigFile, childConfigContents, function(err) {
+			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);
 					callback(err); 
@@ -215,7 +215,7 @@ if(process.argv[2]) {
 			
 		},
 		function(err, callback) {
-			saveConfig(medImageAddonConfig, parentConfigContents, function(err) {
+			writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);
 					callback(err); 

@@ -11,7 +11,6 @@ STANDARDHEADER
 		 		jQuery.ajax({
 					url: uri,
 					success: function(data) {
-						alert("Got data:" + data);
 						jQuery('#resize').html(data);
 					}
 				 }); 
@@ -48,10 +47,11 @@ STANDARDHEADER
 
  							<!-- Nav tabs -->
                             <ul id="setting-tabs" class="nav nav-tabs">
-                                <li class="active"><a id="resize-tab" href="#resize" data-toggle="tab">Resize</a>
+                                <li class="active"><a href="#main" data-toggle="tab">Main Server</a>
                                 </li>
-                                <li><a href="#main" data-toggle="tab">Main</a>
+                                <li><a id="resize-tab" href="#resize" data-toggle="tab">Resize</a>
                                 </li>
+                                
                               
                             </ul>
 
@@ -59,12 +59,10 @@ STANDARDHEADER
                             <div class="tab-content">
                                 
                                 <div class="tab-pane fade in active" id="resize">
-                                    
-                                    
                                 </div>
                                 <div class="tab-pane fade" id="main">
                                     <h4>Main Server</h4>
-                                    <p></p>
+                                    <p>There are no settings currently for the main server.</p>
                                 </div>
                             </div>
 

@@ -107,12 +107,12 @@ begin
     begin
         if not (ResultCode = 0) then   
         begin
-            MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '.', mbCriticalError, MB_OK);
+            MsgBox('Warning: There was a problem during installation.', mbCriticalError, MB_OK);
         end;
     end
     else 
     begin
-        MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '.', mbCriticalError, MB_OK);
+        MsgBox('Warning: There was a problem during installation.', mbCriticalError, MB_OK);
     end;
 end;
 

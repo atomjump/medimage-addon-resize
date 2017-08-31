@@ -45,7 +45,7 @@ function readConfig(confFile, cb) {
 				cb(content, null);
 			} catch (e) {
 				console.log("Error reading json file:" + JSON.stringify(e));
-				cb(null, e);
+				cb({}, e);
 			}
 
 			

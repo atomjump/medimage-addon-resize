@@ -230,6 +230,7 @@ if(process.argv[2]) {
 			console.log("The installation was not complete.");
 		} else {
 			console.log("The installation was completed successfully!");
+		}
 	});
 
 			

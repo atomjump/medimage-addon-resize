@@ -213,11 +213,11 @@ if(process.argv[2]) {
 				
 				if(err) {
 					//OK check if the file even exists - if it doesn't continue on to create one
-					fs.lstat( thisAddOnConfigFile, function (err, inodeStatus) {
-						  if (err) {
+					fs.lstat( thisAddOnConfigFile, function (staterr, inodeStatus) {
+						  if (staterr) {
 
 							// file does not exist-
-							if (err.code === 'ENOENT' ) {
+							if (staterr.code === 'ENOENT' ) {
 							  console.log("Error loading the add-on's own config file. Will try creating one:" + err); 
 							  
 							  //Add in the data
@@ -228,7 +228,7 @@ if(process.argv[2]) {
 
 								// miscellaneous error (e.g. permissions)
 								console.log("Error loading the add-on's own config file:" + err); 
-								callback(err, null);
+								callback(staterr, null);
 							}
 						  } else {
 						  	//All good with the file, so we don't want to overwrite it. Stop here.
@@ -270,12 +270,12 @@ if(process.argv[2]) {
 				if(err) {
 				
 					//OK check if the file even exists - if it doesn't continue on to create one
-					fs.lstat( thisAddOnConfigFile, function (err, inodeStatus) {
-						  if (err) {
+					fs.lstat( thisAddOnConfigFile, function (staterr, inodeStatus) {
+						  if (staterr) {
 
 							// file does not exist-
-							if (err.code === 'ENOENT' ) {
-							  console.log("Error loading the master add-on config file. Will try creating one:" + err); 
+							if (staterr.code === 'ENOENT' ) {
+							  console.log("Error loading the master add-on config file. Will try creating one:" + staterr); 
 							  
 							  var parentConfigContents = {
 								"events": {
@@ -284,7 +284,7 @@ if(process.argv[2]) {
 									"urlRequest": [
 									]
 								}
-							  }
+							  };
 							  
 							  
 							  //Add in the data
@@ -295,7 +295,7 @@ if(process.argv[2]) {
 
 								// miscellaneous error (e.g. permissions)
 								console.log("Error loading the master add-on config file:" + err); 
-								callback(err, null);
+								callback(staterr, null);
 							}
 						  } else {
 						  	//All good with the file, so we don't want to overwrite it. Stop here.

@@ -20,7 +20,7 @@
 
 
 ;Change this dir depending on where you are compiling from. Leave off the trailing slash
-#define STARTDIR "C:\test\buildSoftwareMedImage"
+#define STARTDIR "C:\test\buildSoftwareMedImage\MedImage-Addons"
 #define DEFAULTPHOTOSDIR "C:\medimage\photos"
 #define DEFAULTAPPDIR "C:\medimage\addons\resize"
 

@@ -7,11 +7,11 @@ STANDARDHEADER
 		 	jQuery('#resize').click(function() {
 		 		//Get the current settings HTML snippet via an ajax request
 		 		
-		 		uri = "/addon/resize-view-settings";
+		 		uri = "/addon/resize-view-settings/";
 		 		jQuery.ajax({
 					url: uri,
 					success: function(data) {
-						
+						alert("Got data:" + data);
 						jQuery('#resize').html(data);
 					}
 				 }); 

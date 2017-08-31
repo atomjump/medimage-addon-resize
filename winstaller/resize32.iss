@@ -96,7 +96,7 @@ procedure ExecuteRealProgram();
 var
     ResultCode: Integer;
 begin
-    if Exec(ExpandConstant('{pf32}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' width=1200', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
+    if Exec(ExpandConstant('{pf32}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' width%3D1200%26firstRun%3Dtrue', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
     then
     begin
         if not (ResultCode = 0) then   

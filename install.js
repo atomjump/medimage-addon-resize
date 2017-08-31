@@ -14,6 +14,8 @@
 	prepend: [true|false]  - defaults to false, so it inserts at the end of the event list. true would insert at the beginning
 						of the event list. This affects the order of things in the case of the 'photoWritten' event, which
 						can be chained together with other image processing tasks.
+	firstRun: [true|false]  - from a full install, this should be set to 'true' to enable adding menu elements etc.
+								However, we don't want to add those menu elements twice, so the 2nd time we can leave this off.
 
 */ 
 
@@ -70,6 +72,8 @@ var thisAppEventURLRequest = [
 									"active": true
 								}
                        		 ];
+                       		 
+var outgoingOptions = {};
 
 
 function readConfig(confFile, cb) {
@@ -295,6 +299,9 @@ if(process.argv[2]) {
 		},
 		function(childConfigContents, callback) {
 			//Write back the add-on's config file
+			outgoingOptions = childConfigContents;		//Get a global backup for when we exit this script
+			
+			
 			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);
@@ -389,22 +396,34 @@ if(process.argv[2]) {
 		},
 		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted
-			for(cnt=0; cnt< htmlToInsert.length; cnt++) {
-				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
+			if(opts.firstRun === "true") {
+				//We only want to do this on the first run from a full install
+			
+				for(cnt=0; cnt< htmlToInsert.length; cnt++) {
+					var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
 				
-				const $ = cheerio.load(htmlSource);
+					const $ = cheerio.load(htmlSource);
 				
-				if(htmlToInsert[cnt].append) {
-					$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
-				}
+					
+					if(htmlToInsert[cnt].append) {
+						if($.find(htmlToInsert[cnt].selector).length == 0) {
+							//Only insert if not already there
+							$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
+						}
+					}
 				
-				if(htmlToInsert[cnt].remove) {
-					$(htmlToInsert[cnt].selector).remove();
-				}
+					if(htmlToInsert[cnt].remove) {
+						$(htmlToInsert[cnt].selector).remove();
+					}
 
-				if(verbose == true) console.log("New HTML:" + $.html());
-				fs.writeFileSync(htmlToInsert[cnt].file, $.html());
+					if(verbose == true) console.log("New HTML:" + $.html());
+					fs.writeFileSync(htmlToInsert[cnt].file, $.html());
 											
+				}
+				
+				//TODO: Now we need to restart the MedImage Server service (particularly if we have changed the header
+				//which is stored in RAM)
+				
 			}
 			callback(null);
 		}
@@ -416,6 +435,7 @@ if(process.argv[2]) {
 			process.exit(1);
 		} else {
 			console.log("The installation was completed successfully!");
+			console.log("returnParams:?NEWWIDTH=" + outgoingOptions.width + "&NEWHEIGHT=" + outgoingOptions.height);
 			process.exit(0);
 		}
 	});

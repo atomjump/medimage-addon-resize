@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "MedImage Server Add-on Resize"
-#define MyAppShortName "Resize"
+#define MyAppShortName "Resize32"
 #define MyAppGitName "resize"
-#define MyAppLCShortName "resize"
+#define MyAppLCShortName "resize32"
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "AtomJump"
 #define MyAppURL "http://medimage.co.nz"

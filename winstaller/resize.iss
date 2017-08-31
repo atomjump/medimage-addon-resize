@@ -74,7 +74,7 @@ Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversio
 [Code]
 
 
-function GetDir(Param: String): String;
+function GetDir(Param: String);
 begin
 end;
 

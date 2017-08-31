@@ -117,7 +117,7 @@ if(process.argv[2]) {
 				}
 	});
 } else {
-	console.log("Usage: node path/to/photofile.jpg");
+	console.log("Usage: node resize.js path/to/photofile.jpg");
 
 }
  	

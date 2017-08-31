@@ -30,10 +30,17 @@ var verbose = false;
 var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";
 
+var pm2Parent = '';		//Include a string if this is run on linux that represents the MedImage server to restart
+
+
 var pagesToInsert = [
 		{
 			"from": __dirname + "/pages/addon-settings.html",
 			"to": __dirname + "/../../public/pages/addon-settings.html"
+		},
+		{
+			"from": __dirname + "/pages/resize-settings.html",
+			"to": __dirname + "/../../public/pages/resize-settings.html"
 		}
 	];
 	
@@ -69,6 +76,13 @@ var thisAppEventURLRequest = [
 									"scriptURLName": "resize-set",
 									"runProcess": "node parentdir/addons/resize/install.js param1",
 									"waitForRequestFinish":  "addon-settings.html",
+									"active": true
+								},
+								{
+									"addon": "Resize",
+									"scriptURLName": "resize-view-settings",
+									"runProcess": "node parentdir/addons/resize/view-settings.js",
+									"waitForRequestFinish":  "resize-settings.html",
 									"active": true
 								}
                        		 ];
@@ -173,6 +187,36 @@ function addToMedImageServerConfig(configContents, insertObjArray, eventName, pr
 	}
 	
 	return configContents;
+}
+
+
+function restartParentServer()
+{
+	//Restart the parent MedImage service
+	var platform = process.platform;
+	var isWin = /^win/.test(platform);
+	if(isWin) {
+		var run = 'net stop medimage';
+		if(verbose == true) console.log("Running:" + run);
+		exec(run, function(error, stdout, stderr){
+			console.log(stdout);
+			
+			var run = 'net start medimage';
+			exec(run, function(error, stdout, stderr){
+				console.log(stdout);
+			});
+		});
+	} else {
+	   //Probably linux
+	   if((pm2Parent) && (pm2Parent != '')) {
+		   var run = 'pm2 restart ' + pm2Parent;
+			if(verbose == true) console.log("Running:" + run);
+			exec(run, function(error, stdout, stderr){
+				console.log(stdout);
+			});
+		}
+	}
+
 }
 
 
@@ -421,8 +465,9 @@ if(process.argv[2]) {
 											
 				}
 				
-				//TODO: Now we need to restart the MedImage Server service (particularly if we have changed the header
+				//Now we need to restart the MedImage Server service (particularly if we have changed the header
 				//which is stored in RAM)
+				restartParentServer();
 				
 			}
 			callback(null);

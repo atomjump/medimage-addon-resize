@@ -4,7 +4,19 @@ STANDARDHEADER
     <script>
 		
 		jQuery(document).ready(function(){
-		 
+		 	jQuery('#resize').onclick(function() {
+		 		//Get the current settings HTML snippet via an ajax request
+		 		
+		 		uri = "/addon/resize-view-settings/";
+		 		jQuery.ajax({
+					url: uri,
+					success: function(data) {
+						
+						jQuery('#resize').html(data);
+					}
+				 }); 
+		 	
+		 	});
 
 		});
 
@@ -47,38 +59,7 @@ STANDARDHEADER
                             <div class="tab-content">
                                 
                                 <div class="tab-pane fade in active" id="resize">
-                                    <h4>Resize Add-on</h4>
                                     
-                                    <form id="search-dir" action="/addon/resize-set" role="form">
-										<div class="form-group">
-											<label>Width</label>
-											<input class="form-control" id="width" type="text" name="width" value="1200">
-											<p class="help-block">In pixels, or 'auto'</p>
-										</div>
-										<div class="form-group">
-											<label>Height</label>
-											<input class="form-control" id="height" type="text" name="height" value="auto">
-											<p class="help-block">In pixels, or 'auto'</p>
-										</div>
-										<div class="form-group">
-											<label>Quality</label>
-											<input class="form-control" id="quality" type="text" name="quality" value="90">
-											<p class="help-block">As a percentage 0 - 100</p>
-										</div>
-										<div class="form-group">
-											<label>Photo filename text to replace..</label>
-											<input class="form-control" id="incomingStringToReplace" type="text" name="incomingStringToReplace" value=".jpg">
-										</div>
-										<div class="form-group">
-											<label>.. with this</label>
-											<input class="form-control" id="newFileRenamed" type="text" name="newFileRenamed" value="-small.jpg">
-										</div>
-										<input type="hidden" name="prepend" value="false">
-										
-										<div class="form-group">
-											<input type="submit" class="btn btn-primary" value="Save">
-										</div>
-									</form>
                                     
                                 </div>
                                 <div class="tab-pane fade" id="main">

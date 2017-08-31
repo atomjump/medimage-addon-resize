@@ -21,6 +21,7 @@ var async = require("async");
 var queryString = require('querystring');
 var fs = require('fs');
 var fsExtra = require('fs-extra');
+var jsdom = require("jsdom");
 
 var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";

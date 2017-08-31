@@ -22,7 +22,7 @@
 ;Change this dir depending on where you are compiling from. Leave off the trailing slash
 #define STARTDIR "C:\test\buildSoftwareMedImage\MedImage-Addons"
 #define DEFAULTPHOTOSDIR "C:\medimage\photos"
-#define DEFAULTAPPDIR "C:\medimage\addons\resize"
+#define DEFAULTAPPDIR "medimage\addons\resize"
 
 
 
@@ -30,7 +30,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{TBC}}
+AppId={{839177C5-0FC1-4E30-BF22-39D37A10556E}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
@@ -38,9 +38,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\{#MyAppShortName}
+DefaultDirName=C:\{#DEFAULTAPPDIR}
 DisableWelcomePage=no
-DisableDirPage=yes
+DisableDirPage=no
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 ;LicenseFile={#STARTDIR}\LICENSE.txt
@@ -59,7 +59,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 
 [Files]
-Source: "{#STARTDIR}\{#MyAppShortName}\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -72,58 +72,24 @@ Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversio
 
 
 [Code]
-var
-  DirPage: TInputDirWizardPage;
 
-var DefaultDir: String;
-var Message: String;
 
-function GetDir(Param: String): String;
+function GetDir(Param: String);
 begin
-  Result := DirPage.Values[StrToInt(Param)];
 end;
 
-procedure InitializeWizard;
-begin
-  //Select a default path to copy into - and special case MT32 in NZ
-  DefaultDir :=  ExpandConstant('{#DEFAULTAPPDIR}');
 
-  //Get previous data if it exists
-  DefaultDir := GetPreviousData('Directory1', DefaultDir);
-  Message := 'App users can create subfolders in this folder, which defaults to a folder on your desktop called "MedImage".';
-    
-  
-  // create a directory input page
-  DirPage := CreateInputDirPage(wpSelectDir, 'Please select the folder where the add-on is to be installed', 'Existing folders will be overriden.', Message, False, 'New Addon Folder');
-  // add directory input page items
-  DirPage.Add('Add-on Directory');
- 
- 
- 
-  // assign default directories for the items from the previously stored data; if
-  // there are no data stored from the previous installation, use default folders
-  // of your choice
-
-  DirPage.Values[0] := DefaultDir;
- 
-end;
 
 procedure RegisterPreviousData(PreviousDataKey: Integer);
 begin
-  // store chosen directories for the next run of the setup
-  SetPreviousData(PreviousDataKey, 'Directory1', DirPage.Values[0]);
 end;
 
 
 procedure BeforeMyProgInstall(S: String);
-var
-  ResultCode: Integer;
 begin
 end;
 
 procedure DeinitializeSetup();
-var
-  ResultCode: Integer;
 begin
   //Restart any existing services stopped in the BeforeMyProgInstall
 end;
@@ -132,17 +98,17 @@ procedure ExecuteRealProgram();
 var
     ResultCode: Integer;
 begin
-    if Exec(ExpandConstant('{pf32}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' ' + ExpandConstant('""{code:GetDir|0}""'), '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
+    if Exec(ExpandConstant('{pf32}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' width=1200', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
     then
     begin
         if not (ResultCode = 0) then   
         begin
-            MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '. Your pictures will appear in C:\MedImage\photos. You can still try adding your folder manually to the file C:\MedImage\addons\resize, or try re-installing.', mbCriticalError, MB_OK);
+            MsgBox('Warning: There was a problem during installation.', mbCriticalError, MB_OK);
         end;
     end
     else 
     begin
-        MsgBox('Warning: There was a problem during installation ' + ExpandConstant('{code:GetDir|0}') + '. Your pictures will appear in C:\MedImage\photos. You can still try adding your folder manually to the file C:\MedImage\addons\resize, or try re-installing.', mbCriticalError, MB_OK);
+        MsgBox('Warning: There was a problem during installation.', mbCriticalError, MB_OK);
     end;
 end;
 

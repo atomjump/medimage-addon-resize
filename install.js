@@ -23,6 +23,8 @@ var fs = require('fs');
 var fsExtra = require('fs-extra');
 const cheerio = require('cheerio');
 
+var verbose = false;
+
 var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";
 

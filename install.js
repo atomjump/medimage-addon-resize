@@ -40,13 +40,15 @@ function readConfig(confFile, cb) {
 		if (err) {
 				cb(null, "Sorry, cannot read config file! " + err);
 		} else {
-			if(data && data != "") {
+			try {
 				var content = JSON.parse(data);
-			} else {
-				var content = {};
+				cb(content, null);
+			} catch (e) {
+				console.log("Error reading json file:" + JSON.stringify(e));
+				cb(null, e);
 			}
 
-			cb(content, null);
+			
 		};
 	});
 

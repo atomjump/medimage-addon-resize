@@ -81,7 +81,7 @@ function inArrayAlready(objCheck, inThisArray)
 	var strOfObj = JSON.stringify(objCheck);
 	
 	for(var cnt = 0; cnt< inThisArray.length; cnt++) {
-		if(strOfObj === JSON.stringify(inThisArray[cnt])) {
+		if(strOfObj === JSON.stringify(inThisArray[cnt]) {
 			return true;
 		}
 	}
@@ -207,13 +207,38 @@ if(process.argv[2]) {
 		function(callback) {
 			//Read the local add-on's config
 			readConfig(thisAddOnConfigFile, function(childConfigContents, err) {
+				if(!childConfigContents) {
+					var childConfigContents = {};
+				}
+				
 				if(err) {
-					console.log("Error loading the add-on's own config file:" + err); 
-					callback(err);
+					//OK check if the file even exists - if it doesn't continue on to create one
+					fs.lstat( thisAddOnConfigFile, function (err, inodeStatus) {
+						  if (err) {
+
+							// file does not exist-
+							if (err.code === 'ENOENT' ) {
+							  console.log("Error loading the add-on's own config file. Will try creating one:" + err); 
+							  callback(null, childConfigContents);		//So continue
+							  
+							} else {
+
+								// miscellaneous error (e.g. permissions)
+								console.log("Error loading the add-on's own config file:" + err); 
+								callback(err, null);
+							}
+						  } else {
+						  	//All good with the file, so we don't want to overwrite it. Stop here.
+						  	console.log("Error loading the add-on's own config file:" + err); 
+							callback(err, null);
+						  
+						  }
+					});
+
+						
+					
 				} else {
-					if(!childConfigContents) {
-						childConfigContents = {};
-					}
+					
 				
 					//Modify the addon config for the master server
 					childConfigContents = changeLocalConfig(childConfigContents, opts);
@@ -224,6 +249,7 @@ if(process.argv[2]) {
 			});
 		},
 		function(childConfigContents, callback) {
+			//Write back the add-on's config file
 			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);

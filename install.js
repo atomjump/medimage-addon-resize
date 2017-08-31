@@ -81,7 +81,7 @@ function inArrayAlready(objCheck, inThisArray)
 	var strOfObj = JSON.stringify(objCheck);
 	
 	for(var cnt = 0; cnt< inThisArray.length; cnt++) {
-		if(strOfObj === inThisArray[cnt]) {
+		if(strOfObj === JSON.stringify(inThisArray[cnt])) {
 			return true;
 		}
 	}

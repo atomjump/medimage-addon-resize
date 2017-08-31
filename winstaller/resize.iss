@@ -38,9 +38,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\{#MyAppShortName}
+DefaultDirName=C:\{#DEFAULTAPPDIR}
 DisableWelcomePage=no
-DisableDirPage=yes
+DisableDirPage=no
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 ;LicenseFile={#STARTDIR}\LICENSE.txt
@@ -83,30 +83,7 @@ begin
   Result := DirPage.Values[StrToInt(Param)];
 end;
 
-procedure InitializeWizard;
-begin
-  //Select a default path to copy into - and special case MT32 in NZ
-  DefaultDir :=  ExpandConstant('{#DEFAULTAPPDIR}');
 
-  //Get previous data if it exists
-  DefaultDir := GetPreviousData('Directory1', DefaultDir);
-  Message := '';
-    
-  
-  // create a directory input page
-  DirPage := CreateInputDirPage(wpSelectDir, 'Please select the folder where the add-on is to be installed', 'Existing folders will be overriden.', Message, False, 'New Addon Folder');
-  // add directory input page items
-  DirPage.Add('Add-on Directory');
- 
- 
- 
-  // assign default directories for the items from the previously stored data; if
-  // there are no data stored from the previous installation, use default folders
-  // of your choice
-
-  DirPage.Values[0] := DefaultDir;
- 
-end;
 
 procedure RegisterPreviousData(PreviousDataKey: Integer);
 begin

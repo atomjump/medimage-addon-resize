@@ -379,7 +379,7 @@ if(process.argv[2]) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
 				
 				const $ = cheerio.load(htmlSource);
-				htmlToInsert[cnt].jQuery;
+				cheerio.load(htmlToInsert[cnt].jQuery);
 				//$('#side-menu').append("<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"),
 
 				console.log("New HTML:" + $.html());

@@ -175,12 +175,12 @@ if(process.argv[2]) {
 					//Modify the addon config for the master server
 					childConfigContents = changeLocalConfig(childConfigContents, opts);
 				
-					callback(null);				
+					callback(null, childConfigContents);				
 				}
 				
 			});
 		},
-		function(err, callback) {
+		function(err, childConfigContents, callback) {
 			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);
@@ -208,13 +208,13 @@ if(process.argv[2]) {
 					//Modify the addon config for the master server
 					parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
 				
-					callback(null);				
+					callback(null, parentConfigContents);				
 				}
 				
 			});
 			
 		},
-		function(err, callback) {
+		function(err, parentConfigContents, callback) {
 			writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);

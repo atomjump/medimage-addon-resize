@@ -270,7 +270,7 @@ if(process.argv[2]) {
 				if(err) {
 				
 					//OK check if the file even exists - if it doesn't continue on to create one
-					fs.lstat( thisAddOnConfigFile, function (staterr, inodeStatus) {
+					fs.lstat( medImageAddonConfig, function (staterr, inodeStatus) {
 						  if (staterr) {
 
 							// file does not exist-

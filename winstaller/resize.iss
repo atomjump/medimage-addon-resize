@@ -80,7 +80,6 @@ var Message: String;
 
 function GetDir(Param: String): String;
 begin
-  Result := DirPage.Values[StrToInt(Param)];
 end;
 
 

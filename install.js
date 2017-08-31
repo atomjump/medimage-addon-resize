@@ -35,7 +35,7 @@ var pagesToInsert = [
 var htmlToInsert = [
 		{
 			"file": __dirname + "/../../public/components/header.html",
-			"jQuery": "$('#side-menu').append('<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>');";
+			"jQuery": "$('#side-menu').append('<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>');"
 		}
 	];
 

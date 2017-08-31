@@ -35,7 +35,7 @@ STANDARDHEADER
 
 
  							<!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
+                            <ul id="setting-tabs" class="nav nav-tabs">
                                 <li class="active"><a href="#main" data-toggle="tab">Main</a>
                                 </li>
                                 <li><a href="#resize" data-toggle="tab">Resize</a>
@@ -54,19 +54,27 @@ STANDARDHEADER
                                     
                                     <form id="search-dir" action="/addon/resize-set" role="form">
 										<div class="form-group">
-											<input class="form-control" style="width: 200px;" id="width" type="text" name="width" value="1200">
+											<label>Width</label>
+											<input class="form-control" id="width" type="text" name="width" value="1200">
+											<p class="help-block">In pixels, or 'auto'</p>
 										</div>
 										<div class="form-group">
-											<input class="form-control" style="width: 200px;" id="height" type="text" name="height" value="auto">
+											<label>Height</label>
+											<input class="form-control" id="height" type="text" name="height" value="auto">
+											<p class="help-block">In pixels, or 'auto'</p>
 										</div>
 										<div class="form-group">
-											<input class="form-control" style="width: 200px;" id="quality" type="text" name="quality" value="90">
+											<label>Height</label>
+											<input class="form-control" id="quality" type="text" name="quality" value="90">
+											<p class="help-block">0 - 100</p>
 										</div>
 										<div class="form-group">
-											<input class="form-control" style="width: 200px;" id="incomingStringToReplace" type="text" name="incomingStringToReplace" value=".jpg">
+											<label>Photo filename text to replace</label>
+											<input class="form-control" id="incomingStringToReplace" type="text" name="incomingStringToReplace" value=".jpg">
 										</div>
 										<div class="form-group">
-											<input class="form-control" style="width: 200px;" id="newFileRenamed" type="text" name="newFileRenamed" value="-small.jpg">
+											<label>New photo text replaced to</label>
+											<input class="form-control" id="newFileRenamed" type="text" name="newFileRenamed" value="-small.jpg">
 										</div>
 										<input type="hidden" name="prepend" value="false">
 										

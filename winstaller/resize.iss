@@ -74,12 +74,6 @@ Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversio
 [Code]
 
 
-function GetDir(Param: String);
-begin
-end;
-
-
-
 procedure RegisterPreviousData(PreviousDataKey: Integer);
 begin
 end;

@@ -452,7 +452,8 @@ if(process.argv[2]) {
 					
 					if(htmlToInsert[cnt].append) {
 						console.log("Check exists id: " + htmlToInsert[cnt].id);
-						if(!$(htmlToInsert[cnt].id).first()) {
+						var first = $(htmlToInsert[cnt].id).first().text();
+						if((!first) || (first == "")) {
 							//Only insert if not already there
 							console.log("Doesn't exist");
 							$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);

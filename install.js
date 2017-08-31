@@ -364,14 +364,15 @@ if(process.argv[2]) {
 				}			
 			});
 		},
-		function(parentConfigContents, callback) {
+		function(callback) {
 			//Copy across any pages that need inserting
 			for(cnt=0; cnt< pagesToInsert.length; cnt++) {
 				fsExtra.copySync(pagesToInsert[cnt].from, pagesToInsert[cnt].to);
+				//TODO error check this
 			}
 			callback(null);
 		},
-		function(parentConfigContents, callback) {
+		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted
 			for(cnt=0; cnt< htmlToInsert.length; cnt++) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");

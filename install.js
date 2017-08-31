@@ -22,7 +22,7 @@ var queryString = require('querystring');
 var fs = require('fs');
 
 var thisAddOnConfigFile = 'config/resize.json';
-var medImageAddonConfig = "../../config.json";
+var medImageAddonConfig = "../config.json";
 var thisAppEventPhotoWritten = [{
                                 "addon": "Resize",
                                 "runProcess": "node addons/resize/resize.js param1",

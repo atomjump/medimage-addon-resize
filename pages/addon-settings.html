@@ -4,7 +4,7 @@ STANDARDHEADER
     <script>
 		
 		jQuery(document).ready(function(){
-		 	jQuery('#resize').click(function() {
+		 	jQuery('#resize-tab').click(function() {
 		 		//Get the current settings HTML snippet via an ajax request
 		 		
 		 		uri = "/addon/resize-view-settings/";
@@ -48,7 +48,7 @@ STANDARDHEADER
 
  							<!-- Nav tabs -->
                             <ul id="setting-tabs" class="nav nav-tabs">
-                                <li class="active"><a href="#resize" data-toggle="tab">Resize</a>
+                                <li class="active"><a id="resize-tab" href="#resize" data-toggle="tab">Resize</a>
                                 </li>
                                 <li><a href="#main" data-toggle="tab">Main</a>
                                 </li>

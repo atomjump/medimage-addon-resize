@@ -59,7 +59,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 
 [Files]
-Source: "{#STARTDIR}\{#MyAppShortName}\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

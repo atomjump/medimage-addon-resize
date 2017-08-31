@@ -36,19 +36,16 @@ STANDARDHEADER
 
  							<!-- Nav tabs -->
                             <ul id="setting-tabs" class="nav nav-tabs">
-                                <li class="active"><a href="#main" data-toggle="tab">Main</a>
-                                </li>
                                 <li><a href="#resize" data-toggle="tab">Resize</a>
+                                </li>
+                                <li class="active"><a href="#main" data-toggle="tab">Main</a>
                                 </li>
                               
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" id="main">
-                                    <h4>Main Server</h4>
-                                    <p></p>
-                                </div>
+                                
                                 <div class="tab-pane fade" id="resize">
                                     <h4>Resize Add-on</h4>
                                     
@@ -64,9 +61,9 @@ STANDARDHEADER
 											<p class="help-block">In pixels, or 'auto'</p>
 										</div>
 										<div class="form-group">
-											<label>Height</label>
+											<label>Quality</label>
 											<input class="form-control" id="quality" type="text" name="quality" value="90">
-											<p class="help-block">0 - 100</p>
+											<p class="help-block">As a percentage 0 - 100</p>
 										</div>
 										<div class="form-group">
 											<label>Photo filename text to replace</label>
@@ -83,6 +80,10 @@ STANDARDHEADER
 										</div>
 									</form>
                                     
+                                </div>
+                                <div class="tab-pane fade in active" id="main">
+                                    <h4>Main Server</h4>
+                                    <p></p>
                                 </div>
                             </div>
 

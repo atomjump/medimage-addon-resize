@@ -400,7 +400,7 @@ if(process.argv[2]) {
 					$(htmlToInsert[cnt].selector).remove();
 				}
 
-				console.log("New HTML:" + $.html());
+				if(verbose == true) console.log("New HTML:" + $.html());
 				fs.writeFileSync(htmlToInsert[cnt].file, $.html());
 											
 			}

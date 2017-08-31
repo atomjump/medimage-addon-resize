@@ -36,9 +36,21 @@ var pagesToInsert = [
 var htmlToInsert = [
 		{
 			"file": __dirname + "/../../public/components/header.html",
-			"jQuery": "$('#side-menu').append(\"<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>\");",
-		}
+			"selector": "#side-menu",
+			"append": "<li id='settings'><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"
+		},
+		
+		
 	];
+	/*
+		Or a remove example
+		{
+			"file": __dirname + "/../../public/components/header.html",
+			"selector": "#settings",
+			"remove": true
+		},
+	
+	*/
 
 var thisAppEventPhotoWritten = [
 									{
@@ -379,8 +391,14 @@ if(process.argv[2]) {
 				var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
 				
 				const $ = cheerio.load(htmlSource);
-				cheerio.load(htmlToInsert[cnt].jQuery);
-				//$('#side-menu').append("<li><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"),
+				
+				if(htmlToInsert[cnt].append) {
+					$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
+				}
+				
+				if(htmlToInsert[cnt].remove) {
+					$(htmlToInsert[cnt].selector).remove();
+				}
 
 				console.log("New HTML:" + $.html());
 				//TEMPOUTfs.writeFileSync(htmlToInsert[cnt].file, $.html());

@@ -13,7 +13,7 @@
     "querystring": "*",
     "async": "*",
     "fs-extra": "*",
-    "cherio": "*"    
+    "cheerio": "*"    
   },
   "repository" : { 
      "type" : "git",

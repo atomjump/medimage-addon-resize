@@ -171,7 +171,10 @@ if(process.argv[2]) {
 					console.log("Error loading the add-on's own config file:" + err); 
 					callback(err);
 				} else {
-		
+					if(!childConfigContents) {
+						childConfigContents = {};
+					}
+				
 					//Modify the addon config for the master server
 					childConfigContents = changeLocalConfig(childConfigContents, opts);
 				

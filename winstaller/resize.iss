@@ -72,11 +72,7 @@ Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversio
 
 
 [Code]
-var
-  DirPage: TInputDirWizardPage;
 
-var DefaultDir: String;
-var Message: String;
 
 function GetDir(Param: String): String;
 begin

@@ -27,7 +27,7 @@ var thisAppEventPhotoWritten = [{
                                 "addon": "Resize",
                                 "runProcess": "node addons/resize/resize.js param1",
                                 "active": true
-                        }];
+                       		 }];
 
 
 function readConfig(confFile, cb) {
@@ -73,6 +73,22 @@ function writeConfig(confFile, content, cb) {
 }
 
 
+function inArrayAlready(objCheck, inThisArray) 
+{
+	//Checks the objCheck is not already in the array - saves us from doubling up. Note - if the status
+	//is true vs false, it will still include both options.
+	//Returns true if in the array, and false if not.
+	var strOfObj = JSON.stringify(objCheck);
+	
+	for(var cnt = 0; cnt< inThisArray.length; cnt++) {
+		if(strOfObj === inThisArray[cnt]) {
+			return true;
+		}
+	}
+	//Fall through - is not in array
+	return false;
+
+}
 
 
 function addToMedImageServerConfig(configContents, insertObjArray, eventName, prepend)
@@ -97,13 +113,16 @@ function addToMedImageServerConfig(configContents, insertObjArray, eventName, pr
 	if(prepend == true) {
 		//Go through the array of objects backwards
 		for(var cnt = (insertObjArray.length - 1); cnt >= 0; cnt--) {
-			configContents.events[eventName].unshift(insertObjArray[cnt]);	//insert at the start of the chain, but backwards so
-																//it will keep the same order
+			if(! inArrayAlready(insertObjArray[cnt], configContents.events[eventName])) {
+				configContents.events[eventName].unshift(insertObjArray[cnt]);	//insert at the start of the chain, but backwards so
+			}														//it will keep the same order
 		}
 	} else {
 		//Go through the array of objects forwards
 		for(var cnt = 0; cnt< insertObjArray.length; cnt++) {
-			configContents.events[eventName].push(insertObjArray[cnt]);	//insert at the end of the chain
+			if(! inArrayAlready(insertObjArray[cnt], configContents.events[eventName])) {
+				configContents.events[eventName].push(insertObjArray[cnt]);	//insert at the end of the chain
+			}
 		}
 	}
 	

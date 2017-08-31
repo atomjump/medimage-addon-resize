@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "jimp": "*",
-    "upath": "*"
+    "upath": "*",
+    "querystring": "*"
   },
   "repository" : { 
      "type" : "git",

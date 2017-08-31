@@ -18,6 +18,7 @@
 */ 
 
 var async = require("async");
+var queryString = require('querystring');
 
 var thisAddOnConfigFile = 'config/resize.json';
 var medImageAddonConfig = "/../config.json";

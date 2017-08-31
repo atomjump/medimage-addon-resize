@@ -196,7 +196,7 @@ if(process.argv[2]) {
 					callback(err); 
 		
 				} else {
-					console.log("Saved the add-on config file successfully!");
+					//Success
 					callback(null);
 				}			
 			});
@@ -230,7 +230,7 @@ if(process.argv[2]) {
 					callback(err); 
 		
 				} else {
-					console.log("Saved the add-on config file successfully!");
+					//Success
 					callback(null);
 				}			
 			});

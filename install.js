@@ -157,7 +157,7 @@ function changeLocalConfig(configContents, opts)
 		configContents.quality = 90;
 	}
 	if(opts.quality) {
-		configContents.quality = opts.quality;
+		configContents.quality = parseInt(opts.quality);
 	}
 
 	return configContents;

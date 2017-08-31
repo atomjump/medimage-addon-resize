@@ -95,9 +95,16 @@ function addToMedImageServerConfig(configContents, insertObjArray, eventName, pr
 	}
 	
 	if(prepend == true) {
-		configContents.events[eventName].unshift(insertObjArray);	//insert at the start of the chain
+		//Go through the array of objects backwards
+		for(var cnt = (insertObjArray.length - 1); cnt >= 0; cnt--) {
+			configContents.events[eventName].unshift(insertObjArray[cnt]);	//insert at the start of the chain, but backwards so
+																//it will keep the same order
+		}
 	} else {
-		configContents.events[eventName].push(insertObjArray);	//insert at the end of the chain
+		//Go through the array of objects forwards
+		for(var cnt = 0; cnt< insertObjArray.length; cnt++) {
+			configContents.events[eventName].push(insertObjArray[cnt]);	//insert at the end of the chain
+		}
 	}
 	
 	return configContents;

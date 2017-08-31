@@ -401,7 +401,7 @@ if(process.argv[2]) {
 				}
 
 				console.log("New HTML:" + $.html());
-				//TEMPOUTfs.writeFileSync(htmlToInsert[cnt].file, $.html());
+				fs.writeFileSync(htmlToInsert[cnt].file, $.html());
 											
 			}
 			callback(null);

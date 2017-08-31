@@ -25,7 +25,7 @@ var thisAddOnConfigFile = __dirname + '/config/resize.json';
 var medImageAddonConfig = __dirname + "/../config.json";
 var thisAppEventPhotoWritten = [{
                                 "addon": "Resize",
-                                "runProcess": "node addons/resize/resize.js param1",
+                                "runProcess": "node parentdir/addons/resize/resize.js param1",
                                 "active": true
                        		 }];
 

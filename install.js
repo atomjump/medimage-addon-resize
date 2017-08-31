@@ -180,7 +180,7 @@ if(process.argv[2]) {
 				
 			});
 		},
-		function(err, childConfigContents, callback) {
+		function(childConfigContents, callback) {
 			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);
@@ -192,7 +192,7 @@ if(process.argv[2]) {
 				}			
 			});
 		},
-		function(err, callback) {
+		function(callback) {
 			//Read the medImage AddonConfig
 			readConfig(medImageAddonConfig, function(parentConfigContents, err) {
 				if(err) {
@@ -214,7 +214,7 @@ if(process.argv[2]) {
 			});
 			
 		},
-		function(err, parentConfigContents, callback) {
+		function(parentConfigContents, callback) {
 			writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
 				if(err) {
 					console.log("Error saving the add-on config file:" + err);

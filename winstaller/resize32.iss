@@ -7,7 +7,7 @@
 #define MyAppGitName "resize"
 #define MyAppLCShortName "resize32"
 #define MyAppLCBaseName "resize"
-#define MyAppVersion "0.1.0"
+#define MyAppVersion "0.2.0"
 #define MyAppPublisher "AtomJump"
 #define MyAppURL "http://medimage.co.nz"
 #define MyAppExeName "winstart-browser.bat"

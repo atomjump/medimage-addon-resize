@@ -45,7 +45,7 @@ function removeLastInstance(badtext, str) {
 function strFunctionInserter(func) {
 	var strver = func.toString();
 	strver = strver.replace("function () {","");		//Get rid of first function
-	removeLastInstance("}", strver);
+	strver = removeLastInstance("}", strver);
 	return JSON.stringify(strver);
 }	
 

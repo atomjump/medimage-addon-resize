@@ -54,7 +54,7 @@ function stringifyWithFunctions(object) {
   });
 };
 	
-var jQueryDyn = function() {
+function jqQueryDyn() {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
 			//Get the current settings HTML snippet via an ajax request

@@ -101,7 +101,7 @@ var htmlToInsert = [
 			"file": __dirname + "/../../public/pages/addon-settings.html",
 			"selector": "#tab-content",
 			"newId": "resize",
-			"append": "<div class='tab-pane fade' id='resize'></div><script>" + strFunctionInserter(jQueryDyn) + "</script>"
+			"append": "<div class='tab-pane fade' id='resize'></div><script>" + JSON.parse(strFunctionInserter(jQueryDyn)) + "</script>"
 		},
 		
 		

@@ -44,6 +44,16 @@ var pagesToInsert = [
 		}
 	];
 	
+	
+function stringifyWithFunctions(object) {
+  return JSON.stringify(object, (key, val) => {
+    if (typeof val === 'function') {
+      return `(${val})`; // make it a string, surround it by parenthesis to ensure we can revive it as an anonymous function
+    }
+    return val;
+  });
+};
+	
 var jQueryDyn = function() {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
@@ -62,7 +72,7 @@ var jQueryDyn = function() {
 	});
 }	
 
-console.log("Function as a string:" + jQueryDyn.toString());
+console.log("Function as a string:" + stringifyWithFunctions(jQueryDyn));
 
 	
 var htmlToInsert = [
@@ -82,7 +92,7 @@ var htmlToInsert = [
 			"file": __dirname + "/../../public/pages/addon-settings.html",
 			"selector": "#tab-content",
 			"newId": "resize",
-			"append": "<div class='tab-pane fade' id='resize'></div><script>" + jQueryDyn.toString() + "</script>"
+			"append": "<div class='tab-pane fade' id='resize'></div><script>" + stringifyWithFunctions(jQueryDyn) + "</script>"
 		},
 		
 		

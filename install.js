@@ -44,9 +44,24 @@ var pagesToInsert = [
 		}
 	];
 	
-
 	
-var jQueryDyn = {
+	
+function removeLastInstance(badtext, str) {
+    var charpos = str.lastIndexOf(badtext);
+    if (charpos<0) return str;
+    ptone = str.substring(0,charpos);
+    pttwo = str.substring(charpos+(badtext.length));
+    return (ptone+pttwo);
+}	
+
+function strFunctionInserter(func) {
+	var strver = func.toString();
+	strver = strver.replace("function() {","");		//Get rid of first function
+	removeLastInstance("}", strver);
+	return JSON.stringify(strver);
+}	
+	
+var jQueryDyn = function() {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
 			//Get the current settings HTML snippet via an ajax request
@@ -64,7 +79,7 @@ var jQueryDyn = {
 	});
 }	
 
-console.log("Function as a string:" + JSON.stringify(jQueryDyn.toString(), null, 3));
+console.log("Function as a string:" + strFunctionInserter(jQueryDyn));
 
 	
 var htmlToInsert = [
@@ -84,7 +99,7 @@ var htmlToInsert = [
 			"file": __dirname + "/../../public/pages/addon-settings.html",
 			"selector": "#tab-content",
 			"newId": "resize",
-			"append": "<div class='tab-pane fade' id='resize'></div><script>" + JSON.stringify(jQueryDyn.toString(), null, 3) + "</script>"
+			"append": "<div class='tab-pane fade' id='resize'></div><script>" + strFunctionInserter(jQueryDyn) + "</script>"
 		},
 		
 		

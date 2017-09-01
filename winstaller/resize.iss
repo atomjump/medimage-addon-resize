@@ -92,7 +92,7 @@ procedure ExecuteRealProgram();
 var
     ResultCode: Integer;
 begin
-    if Exec(ExpandConstant('{pf64}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' width%3D1200%26firstRun%3Dtrue', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
+    if Exec(ExpandConstant('{pf64}\nodejs\node.exe'), ExpandConstant('{app}\install.js') + ' firstRun%3Dtrue', '', SW_HIDE, ewWaitUntilTerminated, ResultCode)
     then
     begin
         if not (ResultCode = 0) then   
@@ -125,5 +125,9 @@ Filename: "{sys}\net.exe"; WorkingDir: "{tmp}"; StatusMsg:"Trying to set your co
 
 [UninstallRun]
 
+; Run our custom uninstall
+Filename: "{pf64}\nodejs\node.exe"; Parameters: "{app}\uninstall.js"; Flags: runascurrentuser;
+
 ; Remove all leftovers
 Filename: "{sys}\rmdir"; Parameters: "-r ""{app}"""; Flags: runascurrentuser;
+

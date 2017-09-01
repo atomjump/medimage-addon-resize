@@ -335,66 +335,62 @@ async.waterfall([
 		
 	},
 	function(callback) {
-		//And add any menus or any other html pages that need to be adjusted
-		if(opts.firstRun === "true") {
-			//We only want to do this on the first run from a full install
+		//Remove any menus or any other html pages that were adjusted
 		
 			
-			async.eachOf(htmlToInsert,
-				// 2nd param is the function that each item is passed to
-				function(htmlIns, cnt, cb){
-					
-			
-					var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
-			
-					const $ = cheerio.load(htmlSource);
-			
+		async.eachOf(htmlToInsert,
+			// 2nd param is the function that each item is passed to
+			function(htmlIns, cnt, cb){
 				
-					if(htmlToInsert[cnt].append) {
-						console.log("Check exists id: " + htmlIns.newId);
-						var exists = $("#" + htmlIns.newId).length;
-						if(!exists) {
-							//Only insert if not already there
-							console.log("Doesn't exist");
-							$(htmlIns.selector).append(htmlIns.append);
-						} else { 
-							console.log("Already exists");
-						}
-					}
+		
+				var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
+		
+				const $ = cheerio.load(htmlSource);
+		
 			
-					if(htmlIns.remove) {
-						$(htmlIns.selector).remove();
+				if(htmlToInsert[cnt].append) {
+					console.log("Check exists id: " + htmlIns.newId);
+					var exists = $("#" + htmlIns.newId).length;
+					if(!exists) {
+						//Only insert if not already there
+						console.log("Doesn't exist");
+						$(htmlIns.selector).append(htmlIns.append);
+					} else { 
+						console.log("Already exists");
 					}
+				}
+		
+				if(htmlIns.remove) {
+					$(htmlIns.selector).remove();
+				}
 
-					if(verbose == true) console.log("New HTML:" + $.html());
-					fs.writeFileSync(htmlIns.file, $.html());
-					cb(null);
-				
-				},	//End of async eachOf single item
-				  function(err){
-					// All tasks are done now
-					if(err) {
-					   console.log('ERR:' + err);
-					   callback(err);
-					 } else {
-					   console.log('Completed all code removal!');
-					   
-					   //Now we need to restart the MedImage Server service (particularly if we have changed the header
-					   //which is stored in RAM)
-					   restartParentServer();
-					   
-					   callback(null);
-					 }
-				   }
-			); //End of async eachOf all items
+				if(verbose == true) console.log("New HTML:" + $.html());
+				fs.writeFileSync(htmlIns.file, $.html());
+				cb(null);
+			
+			},	//End of async eachOf single item
+			  function(err){
+				// All tasks are done now
+				if(err) {
+				   console.log('ERR:' + err);
+				   callback(err);
+				 } else {
+				   console.log('Completed all code removal!');
+				   
+				   //Now we need to restart the MedImage Server service (particularly if we have changed the header
+				   //which is stored in RAM)
+				   restartParentServer();
+				   
+				   callback(null);
+				 }
+			   }
+		); //End of async eachOf all items
 										
 			
 			
 			
 			
-		} else {	//Not the first run
-			callback(null);
-		}
+
 	}
 	
 ], function (err, result) {

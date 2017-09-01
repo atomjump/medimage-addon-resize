@@ -516,7 +516,7 @@ if(process.argv[2]) {
 							if((!exists) || (exists == "")) {
 								//Only insert if not already there
 								console.log("Doesn't exist");
-								$(htmlIns.selector).append(html.append);
+								$(htmlIns.selector).append(htmlIns.append);
 							} else { 
 								console.log("Already exists");
 							}

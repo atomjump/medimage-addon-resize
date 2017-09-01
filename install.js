@@ -244,7 +244,7 @@ function addToMedImageServerConfig(configContents, insertObjArray, eventName, pr
 }
 
 
-function restartParentServer()
+function restartParentServer(cb)
 {
 	//Restart the parent MedImage service
 	var platform = process.platform;
@@ -255,6 +255,7 @@ function restartParentServer()
 		exec(run, function(error, stdout, stderr){
 			if(error) {
 				console.log("Error stopping MedImage:" + error);
+				cb();
 			
 			} else {
 				console.log(stdout);
@@ -263,8 +264,10 @@ function restartParentServer()
 				exec(run, function(error, stdout, stderr){
 					if(error) {
 						console.log("Error starting MedImage:" + error);
+						cb();
 					} else {
 						console.log(stdout);
+						cb();
 					}
 				});
 			}
@@ -276,6 +279,7 @@ function restartParentServer()
 			if(verbose == true) console.log("Running:" + run);
 			exec(run, function(error, stdout, stderr){
 				console.log(stdout);
+				cb();
 			});
 		}
 	}
@@ -572,9 +576,12 @@ if(process.argv[2]) {
 						   
 						   //Now we need to restart the MedImage Server service (particularly if we have changed the header
 						   //which is stored in RAM)
-						   restartParentServer();
+						   restartParentServer(function(){ 
+						   		callback(null);
 						   
-						   callback(null);
+						   });
+						   
+						   
 						 }
 					   }
 				); //End of async eachOf all items

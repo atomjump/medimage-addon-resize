@@ -33,19 +33,7 @@ var medImageAddonConfig = __dirname + "/../config.json";
 var pm2Parent = '';		//Include a string if this is run on linux that represents the MedImage server to restart
 
 
-var pagesToInsert = [
-		{
-			"from": __dirname + "/pages/addon-settings.html",
-			"to": __dirname + "/../../public/pages/addon-settings.html"
-		},
-		{
-			"from": __dirname + "/pages/resize-settings.html",
-			"to": __dirname + "/../../public/pages/resize-settings.html"
-		}
-	];
-	
-	
-	
+//Utility functions
 function removeLastInstance(badtext, str) {
     var charpos = str.lastIndexOf(badtext);
     if (charpos<0) return str;
@@ -60,7 +48,24 @@ function strFunctionInserter(func) {
 	removeLastInstance("}", strver);
 	return JSON.stringify(strver);
 }	
+
+
+//Add-on content
+var pagesToInsert = [
+		{
+			"from": __dirname + "/pages/addon-settings.html",
+			"to": __dirname + "/../../public/pages/addon-settings.html"
+		},
+		{
+			"from": __dirname + "/pages/resize-settings.html",
+			"to": __dirname + "/../../public/pages/resize-settings.html"
+		}
+	];
 	
+	
+	
+
+//This function's contents will be placed into the HTML as-is
 var jQueryDyn = function() {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
@@ -115,11 +120,11 @@ var htmlToInsert = [
 	*/
 
 var thisAppEventPhotoWritten = [
-									{
-										"addon": "Resize",
-										"runProcess": "node parentdir/addons/resize/resize.js param1",
-										"active": true
-									 }
+								{
+									"addon": "Resize",
+									"runProcess": "node parentdir/addons/resize/resize.js param1",
+									"active": true
+								 }
                        		 	];
 var thisAppEventURLRequest = [
                                {
@@ -494,32 +499,49 @@ if(process.argv[2]) {
 			if(opts.firstRun === "true") {
 				//We only want to do this on the first run from a full install
 			
-				for(cnt=0; cnt< htmlToInsert.length; cnt++) {
-					var htmlSource = fs.readFileSync(htmlToInsert[cnt].file, "utf8");
+				//TODO: async this!
+				async.eachOf(htmlToInsert,
+					// 2nd param is the function that each item is passed to
+					function(htmlIns, cnt, callback){
+						
 				
-					const $ = cheerio.load(htmlSource);
+						var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
+				
+						const $ = cheerio.load(htmlSource);
 				
 					
-					if(htmlToInsert[cnt].append) {
-						console.log("Check exists id: " + htmlToInsert[cnt].newId);
-						var exists = $("#" + htmlToInsert[cnt].newId).html();
-						if((!exists) || (exists == "")) {
-							//Only insert if not already there
-							console.log("Doesn't exist");
-							$(htmlToInsert[cnt].selector).append(htmlToInsert[cnt].append);
-						} else { 
-							console.log("Already exists");
+						if(htmlToInsert[cnt].append) {
+							console.log("Check exists id: " + htmlIns.newId);
+							var exists = $("#" + htmlIns.newId).html();
+							if((!exists) || (exists == "")) {
+								//Only insert if not already there
+								console.log("Doesn't exist");
+								$(htmlIns.selector).append(html.append);
+							} else { 
+								console.log("Already exists");
+							}
 						}
-					}
 				
-					if(htmlToInsert[cnt].remove) {
-						$(htmlToInsert[cnt].selector).remove();
-					}
+						if(htmlIns.remove) {
+							$(htmlIns.selector).remove();
+						}
 
-					if(verbose == true) console.log("New HTML:" + $.html());
-					fs.writeFileSync(htmlToInsert[cnt].file, $.html());
+						if(verbose == true) console.log("New HTML:" + $.html());
+						fs.writeFileSync(htmlIns.file, $.html());
+						callback(null);
+					
+					},	//End of async eachOf single item
+					  function(err){
+						// All tasks are done now
+						if(err) {
+						   console.log('ERR:' + err);
+						 } else {
+						   console.log('Completed all photoWritten events!');
+						 }
+					   }
+				); //End of async eachOf all items
 											
-				}
+				
 				
 				//Now we need to restart the MedImage Server service (particularly if we have changed the header
 				//which is stored in RAM)

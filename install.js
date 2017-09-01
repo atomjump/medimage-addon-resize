@@ -536,7 +536,7 @@ if(process.argv[2]) {
 						if(err) {
 						   console.log('ERR:' + err);
 						 } else {
-						   console.log('Completed all photoWritten events!');
+						   console.log('Completed all code insertion!');
 						 }
 					   }
 				); //End of async eachOf all items

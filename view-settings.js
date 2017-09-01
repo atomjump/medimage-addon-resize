@@ -48,7 +48,7 @@ readConfig(readConfigFile, function(conf, err) {
 			   var width = conf.width;
 			   var height = conf.height;
 			  
-			   console.log("returnParams:?WIDTHVAL=" + width + "&HEIGHTVAL=" + height);
+			   console.log("returnParams:?WIDTHVAL=" + width + "&HEIGHTVAL=" + height + "&QUALITYVAL=" + conf.quality + "&INSTRINGVAL=" + conf.incomingStringToReplace + "&OUTRENAMEDVAL=" + conf.newFileRenamed);
 			   
 			}
 });

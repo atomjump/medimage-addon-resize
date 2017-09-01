@@ -4,25 +4,25 @@
 		<div class="form-group">
 			<label>Width</label>
 			<input class="form-control" id="width" type="text" name="width" value="WIDTHVAL">
-			<p class="help-block">In pixels, or 'auto'</p>
+			<p class="help-block">In pixels, or 'auto' to keep aspect ratio of original, based off the height</p>
 		</div>
 		<div class="form-group">
 			<label>Height</label>
 			<input class="form-control" id="height" type="text" name="height" value="HEIGHTVAL">
-			<p class="help-block">In pixels, or 'auto'</p>
+			<p class="help-block">In pixels, or 'auto' to keep aspect ratio of original, based off the width</p>
 		</div>
 		<div class="form-group">
 			<label>Quality</label>
-			<input class="form-control" id="quality" type="text" name="quality" value="90">
+			<input class="form-control" id="quality" type="text" name="quality" value="QUALITYVAL">
 			<p class="help-block">As a percentage 0 - 100</p>
 		</div>
 		<div class="form-group">
 			<label>Photo filename text to replace..</label>
-			<input class="form-control" id="incomingStringToReplace" type="text" name="incomingStringToReplace" value=".jpg">
+			<input class="form-control" id="incomingStringToReplace" type="text" name="incomingStringToReplace" value="INSTRINGVAL">
 		</div>
 		<div class="form-group">
 			<label>.. with this</label>
-			<input class="form-control" id="newFileRenamed" type="text" name="newFileRenamed" value="-small.jpg">
+			<input class="form-control" id="newFileRenamed" type="text" name="newFileRenamed" value="OUTRENAMEDVAL">
 		</div>
 		<input type="hidden" name="prepend" value="false">
 		

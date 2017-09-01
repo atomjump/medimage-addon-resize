@@ -44,17 +44,9 @@ var pagesToInsert = [
 		}
 	];
 	
+
 	
-function stringifyWithFunctions(object) {
-  return JSON.stringify(object, (key, val) => {
-    if (typeof val === 'function') {
-      return `(${val})`; // make it a string, surround it by parenthesis to ensure we can revive it as an anonymous function
-    }
-    return val;
-  });
-};
-	
-function jQueryDyn() {
+var jQueryDyn = function () {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
 			//Get the current settings HTML snippet via an ajax request

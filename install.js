@@ -46,7 +46,7 @@ var pagesToInsert = [
 	
 
 	
-var jQueryDyn = function () {
+var jQueryDyn = {
 	jQuery(document).ready(function(){
 		jQuery('#resize-tab').click(function() {
 			//Get the current settings HTML snippet via an ajax request

@@ -485,34 +485,35 @@ if(process.argv[2]) {
 		},
 		function(callback) {
 			//Copy across any pages that need inserting
+			if(opts.firstRun === "true") {
+				//But only do this on the first run
 			
-			async.eachOf(pagesToInsert,
-					// 2nd param is the function that each item is passed to
-					function(pageIns, cnt, cb){
-						fsExtra.copy(pageIns.from, pageIns.to, function(err) {
+				async.eachOf(pagesToInsert,
+						// 2nd param is the function that each item is passed to
+						function(pageIns, cnt, cb){
+							fsExtra.copy(pageIns.from, pageIns.to, function(err) {
+								if(err) {
+									cb(err);
+								} else {
+									cb(null);
+								}
+							});
+						},	//End of async eachOf single item
+						function(err){
+							// All tasks are done now
 							if(err) {
-								cb(err);
-							} else {
-								cb(null);
-							}
-						});
-					},	//End of async eachOf single item
-					function(err){
-						// All tasks are done now
-						if(err) {
-						   console.log('ERR:' + err);
-						   callback(err);
-						 } else {
-						   console.log('Completed all page insertion!');
-						   callback(null);
-						 }
-					   }
-				); //End of async eachOf all items
-						
-					
-			
-			
-			
+							   console.log('ERR:' + err);
+							   callback(err);
+							 } else {
+							   console.log('Completed all page insertion!');
+							   callback(null);
+							 }
+						   }
+					); //End of async eachOf all items
+			} else {
+				callback(null);
+				
+			}
 		},
 		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted

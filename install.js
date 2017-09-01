@@ -44,12 +44,45 @@ var pagesToInsert = [
 		}
 	];
 	
+var jQueryDyn = function() {
+	jQuery(document).ready(function(){
+		jQuery('#resize-tab').click(function() {
+			//Get the current settings HTML snippet via an ajax request
+
+			uri = "/addon/resize-view-settings/";
+			jQuery.ajax({
+				url: uri,
+				success: function(data) {
+					jQuery('#resize').html(data);
+				}
+			 }); 
+
+		});
+
+	});
+}	
+
+console.log(JSON.encode(jQueryDyn));
+
+	
 var htmlToInsert = [
 		{
 			"file": __dirname + "/../../public/components/header.html",
 			"selector": "#side-menu",
-			"id": "settings",
+			"newId": "settings",
 			"append": "<li id='settings'><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"
+		},
+		{
+			"file": __dirname + "/../../public/pages/addon-settings.html",
+			"selector": "#setting-tabs",
+			"newId": "resize-tab",
+			"append": "<li><a id='resize-tab' href='#resize' data-toggle='tab'>Resize Add-on</a></li>"
+		},
+		{
+			"file": __dirname + "/../../public/pages/addon-settings.html",
+			"selector": "#tab-content",
+			"newId": "resize",
+			"append": "<div class='tab-pane fade' id='resize'></div><script>" + JSON.encode(jQueryDyn) + "</script>"
 		},
 		
 		
@@ -451,8 +484,8 @@ if(process.argv[2]) {
 				
 					
 					if(htmlToInsert[cnt].append) {
-						console.log("Check exists id: " + htmlToInsert[cnt].id);
-						var exists = $("#" + htmlToInsert[cnt].id).html();
+						console.log("Check exists id: " + htmlToInsert[cnt].newId);
+						var exists = $("#" + htmlToInsert[cnt].newId).html();
 						if((!exists) || (exists == "")) {
 							//Only insert if not already there
 							console.log("Doesn't exist");

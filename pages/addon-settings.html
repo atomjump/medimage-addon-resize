@@ -2,7 +2,6 @@ STANDARDHEADER
         
         
     <script>
-		
 		jQuery(document).ready(function(){
 		 	jQuery('#resize-tab').click(function() {
 		 		//Get the current settings HTML snippet via an ajax request
@@ -18,8 +17,7 @@ STANDARDHEADER
 		 	});
 
 		});
-
-	
+		
 	</script>
         
         
@@ -49,20 +47,18 @@ STANDARDHEADER
                             <ul id="setting-tabs" class="nav nav-tabs">
                                 <li class="active"><a href="#main" data-toggle="tab">Main Server</a>
                                 </li>
-                                <li><a id="resize-tab" href="#resize" data-toggle="tab">Resize</a>
-                                </li>
+                                <li><a id="resize-tab" href="#resize" data-toggle="tab">Resize Add-on</a></li>
                                 
                               
                             </ul>
 
                             <!-- Tab panes -->
-                            <div class="tab-content">
+                            <div id="tab-content" class="tab-content" >
                                 <div class="tab-pane fade in active" id="main">
                                     <h4>Main Server</h4>
                                     <p>There are no settings currently for the main server.</p>
                                 </div>
-                                <div class="tab-pane fade " id="resize">
-                                </div>
+                                <div class="tab-pane fade" id="resize"></div>
                             </div>
 
 

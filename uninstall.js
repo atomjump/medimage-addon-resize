@@ -176,7 +176,7 @@ function writeConfig(confFile, content, cb) {
 }
 
 
-function inArrayAlready(objCheck, inThisArray) 
+function removeFromArray(objCheck, inThisArray) 
 {
 	//Checks the objCheck is not already in the array - saves us from doubling up. Note - if the status
 	//is true vs false, it will still include both options.
@@ -188,8 +188,8 @@ function inArrayAlready(objCheck, inThisArray)
 			inThisArray.splice(cnt, 1);
 		}
 	}
-	//Fall through - is not in array
-	return false;
+	
+	return true;
 
 }
 

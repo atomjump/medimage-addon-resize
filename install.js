@@ -72,7 +72,7 @@ function jQueryDyn() {
 	});
 }	
 
-console.log("Function as a string:" + stringifyWithFunctions(jQueryDyn));
+console.log("Function as a string:" + JSON.stringify(jQueryDyn, null, 6));
 
 	
 var htmlToInsert = [

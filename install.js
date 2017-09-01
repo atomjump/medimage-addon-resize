@@ -24,6 +24,7 @@ var queryString = require('querystring');
 var fs = require('fs');
 var fsExtra = require('fs-extra');
 const cheerio = require('cheerio');
+var exec = require('child_process').exec;
 
 var verbose = false;
 

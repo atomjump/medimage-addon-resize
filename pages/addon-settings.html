@@ -1,25 +1,6 @@
 STANDARDHEADER
         
         
-    <script>
-		jQuery(document).ready(function(){
-		 	jQuery('#resize-tab').click(function() {
-		 		//Get the current settings HTML snippet via an ajax request
-		 		
-		 		uri = "/addon/resize-view-settings/";
-		 		jQuery.ajax({
-					url: uri,
-					success: function(data) {
-						jQuery('#resize').html(data);
-					}
-				 }); 
-		 	
-		 	});
-
-		});
-		
-	</script>
-        
         
 
         <div id="page-wrapper">
@@ -44,8 +25,7 @@ STANDARDHEADER
  							<!-- Nav tabs -->
                             <ul id="setting-tabs" class="nav nav-tabs">
                                 <li class="active"><a href="#main" data-toggle="tab">Main Server</a>
-                                </li>
-                                <li><a id="resize-tab" href="#resize" data-toggle="tab">Resize Add-on</a></li>                              
+                                </li>               
                             </ul>
 
                             <!-- Tab panes -->
@@ -54,7 +34,6 @@ STANDARDHEADER
                                     <h4>Main Server</h4>
                                     <p>There are no settings currently for the main server.</p>
                                 </div>
-                                <div id="resize" class="tab-pane fade" ></div>
                             </div>
 
 

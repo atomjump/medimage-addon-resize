@@ -488,21 +488,44 @@ if(process.argv[2]) {
 		},
 		function(callback) {
 			//Copy across any pages that need inserting
-			for(cnt=0; cnt< pagesToInsert.length; cnt++) {
-				fsExtra.copySync(pagesToInsert[cnt].from, pagesToInsert[cnt].to);
-				//TODO error check this
-			}
-			callback(null);
+			
+			async.eachOf(pagesToInsert,
+					// 2nd param is the function that each item is passed to
+					function(pageIns, cnt, cb){
+						fsExtra.copy(pageIns.from, pageIns.to, function(err) {
+							if(err) {
+								cb(err);
+							} else {
+								cb(null);
+							}
+						});
+					},	//End of async eachOf single item
+					function(err){
+						// All tasks are done now
+						if(err) {
+						   console.log('ERR:' + err);
+						   callback(err);
+						 } else {
+						   console.log('Completed all page insertion!');
+						   callback(null);
+						 }
+					   }
+				); //End of async eachOf all items
+						
+					
+			
+			
+			
 		},
 		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted
 			if(opts.firstRun === "true") {
 				//We only want to do this on the first run from a full install
 			
-				//TODO: async this!
+				
 				async.eachOf(htmlToInsert,
 					// 2nd param is the function that each item is passed to
-					function(htmlIns, cnt, callback){
+					function(htmlIns, cnt, cb){
 						
 				
 						var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
@@ -528,27 +551,33 @@ if(process.argv[2]) {
 
 						if(verbose == true) console.log("New HTML:" + $.html());
 						fs.writeFileSync(htmlIns.file, $.html());
-						callback(null);
+						cb(null);
 					
 					},	//End of async eachOf single item
 					  function(err){
 						// All tasks are done now
 						if(err) {
 						   console.log('ERR:' + err);
+						   callback(err);
 						 } else {
 						   console.log('Completed all code insertion!');
+						   
+						   //Now we need to restart the MedImage Server service (particularly if we have changed the header
+						   //which is stored in RAM)
+						   restartParentServer();
+						   
+						   callback(null);
 						 }
 					   }
 				); //End of async eachOf all items
 											
 				
 				
-				//Now we need to restart the MedImage Server service (particularly if we have changed the header
-				//which is stored in RAM)
-				restartParentServer();
 				
+				
+			} else {	//Not the first run
+				callback(null);
 			}
-			callback(null);
 		}
 		
 	], function (err, result) {

@@ -51,16 +51,11 @@ function strFunctionInserter(func) {
 
 
 //Add-on content
-var pagesToInsert = [
-		{
-			"from": __dirname + "/pages/addon-settings.html",
-			"to": __dirname + "/../../public/pages/addon-settings.html"
-		},
-		{
-			"from": __dirname + "/pages/resize-settings.html",
-			"to": __dirname + "/../../public/pages/resize-settings.html"
-		}
+var pagesToRemove = [
+		__dirname + "/../../public/pages/resize-settings.html",
+		thisAddOnConfigFile
 	];
+	//Keeping addon-settings because other addons may use that
 	
 	
 	
@@ -86,25 +81,20 @@ var jQueryDyn = function() {
 	
 var htmlToInsert = [
 		{
-			"file": __dirname + "/../../public/components/header.html",
-			"selector": "#side-menu",
-			"newId": "settings",
-			"append": "<li id='settings'><a href='/pages/addon-settings.html'><i class='fa fa-gear fa-fw'></i> Settings</a></li>"
+			"file": __dirname + "/../../public/pages/addon-settings.html",
+			"selector": "#resize-tab",
+			"remove": true
 		},
 		{
 			"file": __dirname + "/../../public/pages/addon-settings.html",
-			"selector": "#setting-tabs",
-			"newId": "resize-tab",
-			"append": "<li><a id='resize-tab' href='#resize' data-toggle='tab'>Resize Add-on</a></li>"
+			"selector": "#resize",
+			"remove": true
 		},
 		{
 			"file": __dirname + "/../../public/pages/addon-settings.html",
-			"selector": "#tab-content",
-			"newId": "resize",
-			"append": "<div class='tab-pane fade' id='resize'></div><script id='resizeScript'>" + JSON.parse(strFunctionInserter(jQueryDyn)) + "</script>"
-		},
-		
-		
+			"selector": "#resizeScript",
+			"remove": true
+		}
 	];
 	/*
 		Or a remove example
@@ -193,9 +183,9 @@ function inArrayAlready(objCheck, inThisArray)
 	//Returns true if in the array, and false if not.
 	var strOfObj = JSON.stringify(objCheck);
 	
-	for(var cnt = 0; cnt< inThisArray.length; cnt++) {
+	for(var cnt = inThisArray.length - 1; cnt >= 0; cnt--) {		//Moving downwards to keep shifting them out
 		if(strOfObj === JSON.stringify(inThisArray[cnt])) {
-			return true;
+			inThisArray.splice(cnt, 1);
 		}
 	}
 	//Fall through - is not in array
@@ -204,7 +194,8 @@ function inArrayAlready(objCheck, inThisArray)
 }
 
 
-function addToMedImageServerConfig(configContents, insertObjArray, eventName, prepend)
+
+function removeFromMedImageServerConfig(configContents, removeObjArray, eventName)
 {
 	//In an already loaded config, insert the objects specified in the 'insertObjArray', into the event array called 'eventName'
 	// (e.g. 'photoWritten' or 'urlRequest')
@@ -223,24 +214,21 @@ function addToMedImageServerConfig(configContents, insertObjArray, eventName, pr
 		configContents.events[eventName] = [];	
 	}
 	
-	if(prepend == true) {
-		//Go through the array of objects backwards
-		for(var cnt = (insertObjArray.length - 1); cnt >= 0; cnt--) {
-			if(! inArrayAlready(insertObjArray[cnt], configContents.events[eventName])) {
-				configContents.events[eventName].unshift(insertObjArray[cnt]);	//insert at the start of the chain, but backwards so
-			}														//it will keep the same order
-		}
-	} else {
-		//Go through the array of objects forwards
-		for(var cnt = 0; cnt< insertObjArray.length; cnt++) {
-			if(! inArrayAlready(insertObjArray[cnt], configContents.events[eventName])) {
-				configContents.events[eventName].push(insertObjArray[cnt]);	//insert at the end of the chain
-			}
-		}
+	
+	
+	
+	//Go through the array of objects forwards
+	for(var cnt = 0; cnt< removeObjArray.length; cnt++) {
+			
+		removeFromArray(removeObjArray[cnt], configContents.events[eventName]);
+
 	}
+	
 	
 	return configContents;
 }
+
+
 
 
 function restartParentServer()
@@ -273,65 +261,6 @@ function restartParentServer()
 }
 
 
-function changeLocalConfig(configContents, opts)
-{
-	/* A typical local add-on config file:
-		 {
-			"incomingStringToReplace": ".jpg",
-			"currentFileRenamed": null,
-			"newFileRenamed": "-small.jpg",
-			"width": 1200,
-			"height": "auto",
-			"quality": 90
-		}
-		*/
-	//Put in some defaults if the object doesn't exist, but otherwise use the new data
-	
-	if(!configContents.incomingStringToReplace) {
-		configContents.incomingStringToReplace = ".jpg";
-	}
-	if(opts.incomingStringToReplace) {
-		configContents.incomingStringToReplace = opts.incomingStringToReplace;
-	}
-	
-	if(!configContents.newFileRenamed) {
-		configContents.newFileRenamed = "-small.jpg";
-	}
-	if(opts.newFileRenamed) {
-		configContents.newFileRenamed = opts.newFileRenamed;
-	}
-	
-	if(!configContents.width) {
-		configContents.width = 1200;
-	}
-	if(opts.width) {
-		if(opts.width == "auto") {
-			configContents.width = opts.width;
-		} else {
-			configContents.width = parseInt(opts.width);
-		}
-	}
-	
-	if(!configContents.height) {
-		configContents.height = "auto";
-	}
-	if(opts.height) {
-		if(opts.height == "auto") {
-			configContents.height = opts.height;
-		} else {
-			configContents.height = parseInt(opts.height);
-		}
-	}
-	
-	if(!configContents.quality) {
-		configContents.quality = 90;
-	}
-	if(opts.quality) {
-		configContents.quality = parseInt(opts.quality);
-	}
-
-	return configContents;
-}
 
 
 
@@ -348,122 +277,17 @@ if(process.argv[2]) {
 
 	async.waterfall([
 		function(callback) {
-			//Read the local add-on's config
-			readConfig(thisAddOnConfigFile, function(childConfigContents, err) {
-				if(!childConfigContents) {
-					var childConfigContents = {};
-				}
-				
-				if(err) {
-					//OK check if the file even exists - if it doesn't continue on to create one
-					fs.lstat( thisAddOnConfigFile, function (staterr, inodeStatus) {
-						  if (staterr) {
-
-							// file does not exist-
-							if (staterr.code === 'ENOENT' ) {
-							  console.log("Error loading the add-on's own config file. Will try creating one:" + err); 
-							  
-							  //Add in the data
-							  childConfigContents = changeLocalConfig(childConfigContents, opts);
-							  callback(null, childConfigContents);		//So continue
-							  
-							} else {
-
-								// miscellaneous error (e.g. permissions)
-								console.log("Error loading the add-on's own config file:" + err); 
-								callback(staterr, null);
-							}
-						  } else {
-						  	//All good with the file, so we don't want to overwrite it. Stop here.
-						  	console.log("Error loading the add-on's own config file:" + err); 
-							callback(err, null);
-						  
-						  }
-					});
-
-						
-					
-				} else {
-					
-				
-					//Modify the addon config for the master server
-					childConfigContents = changeLocalConfig(childConfigContents, opts);
-				
-					callback(null, childConfigContents);				
-				}
-				
-			});
-		},
-		function(childConfigContents, callback) {
-			//Write back the add-on's config file
-			outgoingOptions = childConfigContents;		//Get a global backup for when we exit this script
-			
-			
-			writeConfig(thisAddOnConfigFile, childConfigContents, function(err) {
-				if(err) {
-					console.log("Error saving the add-on config file:" + err);
-					callback(err); 
-		
-				} else {
-					//Success
-					callback(null);
-				}			
-			});
-		},
-		function(callback) {
 			//Read the medImage AddonConfig
 			readConfig(medImageAddonConfig, function(parentConfigContents, err) {
 				if(err) {
-				
-					//OK check if the file even exists - if it doesn't continue on to create one
-					fs.lstat( medImageAddonConfig, function (staterr, inodeStatus) {
-						  if (staterr) {
-
-							// file does not exist-
-							if (staterr.code === 'ENOENT' ) {
-							  console.log("Error loading the master add-on config file. Will try creating one:" + staterr); 
-							  
-							  var parentConfigContents = {
-								"events": {
-									"photoWritten": [
-									],
-									"urlRequest": [
-									]
-								}
-							  };
-							  
-							  
-							  //Add in the data
-							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
-							  parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest", prepend);
-							  
-							  callback(null, parentConfigContents);		//So continue
-							  
-							} else {
-
-								// miscellaneous error (e.g. permissions)
-								console.log("Error loading the master add-on config file:" + err); 
-								callback(staterr, null);
-							}
-						  } else {
-						  	//All good with the file, so we don't want to overwrite it. Stop here.
-						  	console.log("Error loading the master add-on config file:" + err); 
-							callback(err, null);
-						  
-						  }
-					});
-				
+					console.log("Warning: Could not load the config file to remove elements.");	
+					callback(null);
 				
 				} else {
-					if((opts.prepend)&&(opts.prepend === "true")) {
-						var prepend = true;
-					} else {
-						var prepend = false;
-					}
-		
+							
 					//Modify the addon config for the master server
-					parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten", prepend);
-					parentConfigContents = addToMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest", prepend);
+					parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten");
+					parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest");
 							  
 					callback(null, parentConfigContents);				
 				}
@@ -474,8 +298,8 @@ if(process.argv[2]) {
 		function(parentConfigContents, callback) {
 			writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
 				if(err) {
-					console.log("Error saving the add-on config file:" + err);
-					callback(err); 
+					console.log("Warning: problem saving the add-on config file:" + err);
+					callback(null); 
 		
 				} else {
 					//Success
@@ -485,35 +309,34 @@ if(process.argv[2]) {
 		},
 		function(callback) {
 			//Copy across any pages that need inserting
-			if(opts.firstRun === "true") {
-				//But only do this on the first run
 			
-				async.eachOf(pagesToInsert,
-						// 2nd param is the function that each item is passed to
-						function(pageIns, cnt, cb){
-							fsExtra.copy(pageIns.from, pageIns.to, function(err) {
-								if(err) {
-									cb(err);
-								} else {
-									cb(null);
-								}
-							});
-						},	//End of async eachOf single item
-						function(err){
-							// All tasks are done now
+			//But only do this on the first run
+		
+			async.eachOf(pagesToRemove,
+					// 2nd param is the function that each item is passed to
+					function(pageRem, cnt, cb){
+						fs.unlink(pageRem, function(err) {
+						
 							if(err) {
-							   console.log('ERR:' + err);
-							   callback(err);
-							 } else {
-							   console.log('Completed all page insertion!');
-							   callback(null);
-							 }
-						   }
-					); //End of async eachOf all items
-			} else {
-				callback(null);
-				
-			}
+								console.log("Warning: could not remove the page: " + pageRem);
+							}
+							cb(null);
+						});
+						
+						
+					},	//End of async eachOf single item
+					function(err){
+						// All tasks are done now
+						if(err) {
+						   console.log('ERR:' + err);
+						   callback(err);
+						 } else {
+						   console.log('Completed all page removals.');
+						   callback(null);
+						 }
+					   }
+				); //End of async eachOf all items
+			
 		},
 		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted
@@ -558,7 +381,7 @@ if(process.argv[2]) {
 						   console.log('ERR:' + err);
 						   callback(err);
 						 } else {
-						   console.log('Completed all code insertion!');
+						   console.log('Completed all code removal!');
 						   
 						   //Now we need to restart the MedImage Server service (particularly if we have changed the header
 						   //which is stored in RAM)
@@ -581,11 +404,11 @@ if(process.argv[2]) {
 	], function (err, result) {
 		// result now equals 'done'
 		if(err) {
-			console.log("The installation was not complete.");
+			console.log("The uninstall was not complete.");
 			process.exit(1);
 		} else {
-			console.log("The installation was completed successfully!");
-			console.log("returnParams:?NEWWIDTH=" + outgoingOptions.width + "&NEWHEIGHT=" + outgoingOptions.height);
+			console.log("The uninstall was completed successfully!");
+			console.log("returnParams:?");
 			process.exit(0);
 		}
 	});
@@ -594,7 +417,7 @@ if(process.argv[2]) {
 
 
 } else { 
-	console.log("Usage: node install.js height=auto&width=1200&quality=90&incomingStringToReplace=.jpg&newFileRenamed=-small.jpg&prepend=false\n\nBut the parameter should be urlencoded.");
+	console.log("Usage: node uninstall.js");
 }
 	
 

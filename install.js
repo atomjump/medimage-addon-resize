@@ -253,12 +253,21 @@ function restartParentServer()
 		var run = 'net stop MedImage';
 		if(verbose == true) console.log("Running:" + run);
 		exec(run, function(error, stdout, stderr){
-			console.log(stdout);
+			if(error) {
+				console.log("Error stopping MedImage:" + error);
 			
-			var run = 'net start MedImage';
-			exec(run, function(error, stdout, stderr){
+			} else {
 				console.log(stdout);
-			});
+			
+				var run = 'net start MedImage';
+				exec(run, function(error, stdout, stderr){
+					if(error) {
+						console.log("Error starting MedImage:" + error);
+					} else {
+						console.log(stdout);
+					}
+				});
+			}
 		});
 	} else {
 	   //Probably linux

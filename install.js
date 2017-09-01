@@ -64,7 +64,7 @@ var jQueryDyn = function () {
 	});
 }	
 
-console.log("Function as a string:" + JSON.stringify(jQueryDyn, null, 3));
+console.log("Function as a string:" + JSON.stringify(jQueryDyn.toString(), null, 3));
 
 	
 var htmlToInsert = [
@@ -84,7 +84,7 @@ var htmlToInsert = [
 			"file": __dirname + "/../../public/pages/addon-settings.html",
 			"selector": "#tab-content",
 			"newId": "resize",
-			"append": "<div class='tab-pane fade' id='resize'></div><script>" + JSON.stringify(jQueryDyn, null, 3) + "</script>"
+			"append": "<div class='tab-pane fade' id='resize'></div><script>" + JSON.stringify(jQueryDyn.toString(), null, 3) + "</script>"
 		},
 		
 		

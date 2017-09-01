@@ -267,158 +267,148 @@ function restartParentServer()
 
 
 
-//Read in the command-line params
-if(process.argv[2]) {
 
-	//Incoming get requests are in normal "var=value&var2=value" format urlencoded
-	var opts = queryString.parse(decodeURIComponent(process.argv[2]));
 	
-	//Read in the local app's config file
+//Read in the local app's config file
 
-	async.waterfall([
-		function(callback) {
-			//Read the medImage AddonConfig
-			readConfig(medImageAddonConfig, function(parentConfigContents, err) {
-				if(err) {
-					console.log("Warning: Could not load the config file to remove elements.");	
-					callback(null);
-				
-				} else {
-							
-					//Modify the addon config for the master server
-					parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten");
-					parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest");
-							  
-					callback(null, parentConfigContents);				
-				}
-				
-			});
-			
-		},
-		function(parentConfigContents, callback) {
-			writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
-				if(err) {
-					console.log("Warning: problem saving the add-on config file:" + err);
-					callback(null); 
-		
-				} else {
-					//Success
-					callback(null);
-				}			
-			});
-		},
-		function(callback) {
-			//Copy across any pages that need inserting
-			
-			//But only do this on the first run
-		
-			async.eachOf(pagesToRemove,
-					// 2nd param is the function that each item is passed to
-					function(pageRem, cnt, cb){
-						fs.unlink(pageRem, function(err) {
-						
-							if(err) {
-								console.log("Warning: could not remove the page: " + pageRem);
-							}
-							cb(null);
-						});
-						
-						
-					},	//End of async eachOf single item
-					function(err){
-						// All tasks are done now
-						if(err) {
-						   console.log('ERR:' + err);
-						   callback(err);
-						 } else {
-						   console.log('Completed all page removals.');
-						   callback(null);
-						 }
-					   }
-				); //End of async eachOf all items
-			
-		},
-		function(callback) {
-			//And add any menus or any other html pages that need to be adjusted
-			if(opts.firstRun === "true") {
-				//We only want to do this on the first run from a full install
-			
-				
-				async.eachOf(htmlToInsert,
-					// 2nd param is the function that each item is passed to
-					function(htmlIns, cnt, cb){
-						
-				
-						var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
-				
-						const $ = cheerio.load(htmlSource);
-				
-					
-						if(htmlToInsert[cnt].append) {
-							console.log("Check exists id: " + htmlIns.newId);
-							var exists = $("#" + htmlIns.newId).length;
-							if(!exists) {
-								//Only insert if not already there
-								console.log("Doesn't exist");
-								$(htmlIns.selector).append(htmlIns.append);
-							} else { 
-								console.log("Already exists");
-							}
-						}
-				
-						if(htmlIns.remove) {
-							$(htmlIns.selector).remove();
-						}
-
-						if(verbose == true) console.log("New HTML:" + $.html());
-						fs.writeFileSync(htmlIns.file, $.html());
-						cb(null);
-					
-					},	//End of async eachOf single item
-					  function(err){
-						// All tasks are done now
-						if(err) {
-						   console.log('ERR:' + err);
-						   callback(err);
-						 } else {
-						   console.log('Completed all code removal!');
-						   
-						   //Now we need to restart the MedImage Server service (particularly if we have changed the header
-						   //which is stored in RAM)
-						   restartParentServer();
-						   
-						   callback(null);
-						 }
-					   }
-				); //End of async eachOf all items
-											
-				
-				
-				
-				
-			} else {	//Not the first run
+async.waterfall([
+	function(callback) {
+		//Read the medImage AddonConfig
+		readConfig(medImageAddonConfig, function(parentConfigContents, err) {
+			if(err) {
+				console.log("Warning: Could not load the config file to remove elements.");	
 				callback(null);
+			
+			} else {
+						
+				//Modify the addon config for the master server
+				parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventPhotoWritten, "photoWritten");
+				parentConfigContents = removeFromMedImageServerConfig(parentConfigContents, thisAppEventURLRequest, "urlRequest");
+						  
+				callback(null, parentConfigContents);				
 			}
-		}
+			
+		});
 		
-	], function (err, result) {
-		// result now equals 'done'
-		if(err) {
-			console.log("The uninstall was not complete.");
-			process.exit(1);
-		} else {
-			console.log("The uninstall was completed successfully!");
-			console.log("returnParams:?");
-			process.exit(0);
+	},
+	function(parentConfigContents, callback) {
+		writeConfig(medImageAddonConfig, parentConfigContents, function(err) {
+			if(err) {
+				console.log("Warning: problem saving the add-on config file:" + err);
+				callback(null); 
+	
+			} else {
+				//Success
+				callback(null);
+			}			
+		});
+	},
+	function(callback) {
+		//Copy across any pages that need inserting
+		
+		//But only do this on the first run
+	
+		async.eachOf(pagesToRemove,
+				// 2nd param is the function that each item is passed to
+				function(pageRem, cnt, cb){
+					fs.unlink(pageRem, function(err) {
+					
+						if(err) {
+							console.log("Warning: could not remove the page: " + pageRem);
+						}
+						cb(null);
+					});
+					
+					
+				},	//End of async eachOf single item
+				function(err){
+					// All tasks are done now
+					if(err) {
+					   console.log('ERR:' + err);
+					   callback(err);
+					 } else {
+					   console.log('Completed all page removals.');
+					   callback(null);
+					 }
+				   }
+			); //End of async eachOf all items
+		
+	},
+	function(callback) {
+		//And add any menus or any other html pages that need to be adjusted
+		if(opts.firstRun === "true") {
+			//We only want to do this on the first run from a full install
+		
+			
+			async.eachOf(htmlToInsert,
+				// 2nd param is the function that each item is passed to
+				function(htmlIns, cnt, cb){
+					
+			
+					var htmlSource = fs.readFileSync(htmlIns.file, "utf8");
+			
+					const $ = cheerio.load(htmlSource);
+			
+				
+					if(htmlToInsert[cnt].append) {
+						console.log("Check exists id: " + htmlIns.newId);
+						var exists = $("#" + htmlIns.newId).length;
+						if(!exists) {
+							//Only insert if not already there
+							console.log("Doesn't exist");
+							$(htmlIns.selector).append(htmlIns.append);
+						} else { 
+							console.log("Already exists");
+						}
+					}
+			
+					if(htmlIns.remove) {
+						$(htmlIns.selector).remove();
+					}
+
+					if(verbose == true) console.log("New HTML:" + $.html());
+					fs.writeFileSync(htmlIns.file, $.html());
+					cb(null);
+				
+				},	//End of async eachOf single item
+				  function(err){
+					// All tasks are done now
+					if(err) {
+					   console.log('ERR:' + err);
+					   callback(err);
+					 } else {
+					   console.log('Completed all code removal!');
+					   
+					   //Now we need to restart the MedImage Server service (particularly if we have changed the header
+					   //which is stored in RAM)
+					   restartParentServer();
+					   
+					   callback(null);
+					 }
+				   }
+			); //End of async eachOf all items
+										
+			
+			
+			
+			
+		} else {	//Not the first run
+			callback(null);
 		}
-	});
+	}
+	
+], function (err, result) {
+	// result now equals 'done'
+	if(err) {
+		console.log("The uninstall was not complete.");
+		process.exit(1);
+	} else {
+		console.log("The uninstall was completed successfully!");
+		console.log("returnParams:?");
+		process.exit(0);
+	}
+});
 
 			
-
-
-} else { 
-	console.log("Usage: node uninstall.js");
-}
-	
 
 

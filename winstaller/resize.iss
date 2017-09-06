@@ -126,7 +126,7 @@ Filename: "{sys}\net.exe"; WorkingDir: "{tmp}"; StatusMsg:"Trying to set your co
 [UninstallRun]
 
 ; Run our custom uninstall
-Filename: "{pf64}\nodejs\node.exe"; Parameters: "{app}\uninstall.js"; Flags: runascurrentuser;
+Filename: "{pf64}\nodejs\node.exe"; Parameters: "{app}\uninstall.js"; Flags: runascurrentuser runhidden;
 
 ; Remove all leftovers
 Filename: "{sys}\rmdir"; Parameters: "-r ""{app}"""; Flags: runascurrentuser;

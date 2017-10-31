@@ -55,11 +55,13 @@ function strFunctionInserter(func) {
 var pagesToInsert = [
 		{
 			"from": __dirname + "/pages/addon-settings.html",
-			"to": __dirname + "/../../public/pages/addon-settings.html"
+			"to": __dirname + "/../../public/pages/addon-settings.html",
+			"replace": false
 		},
 		{
 			"from": __dirname + "/pages/resize-settings.html",
-			"to": __dirname + "/../../public/pages/resize-settings.html"
+			"to": __dirname + "/../../public/pages/resize-settings.html",
+			"replace": true
 		}
 	];
 	
@@ -505,7 +507,7 @@ if(process.argv[2]) {
 				async.eachOf(pagesToInsert,
 						// 2nd param is the function that each item is passed to
 						function(pageIns, cnt, cb){
-							fsExtra.copy(pageIns.from, pageIns.to, function(err) {
+							fsExtra.copy(pageIns.from, pageIns.to, { "replace": pageIns.replace }, function(err) {
 								if(err) {
 									cb(err);
 								} else {

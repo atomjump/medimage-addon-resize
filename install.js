@@ -507,7 +507,7 @@ if(process.argv[2]) {
 				async.eachOf(pagesToInsert,
 						// 2nd param is the function that each item is passed to
 						function(pageIns, cnt, cb){
-							fsExtra.copy(pageIns.from, pageIns.to, { "replace": pageIns.replace }, function(err) {
+							fsExtra.copy(pageIns.from, pageIns.to, { "overwrite": pageIns.replace }, function(err) {
 								if(err) {
 									cb(err);
 								} else {

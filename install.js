@@ -360,6 +360,11 @@ if(process.argv[2]) {
 	//Incoming get requests are in normal "var=value&var2=value" format urlencoded
 	var opts = queryString.parse(decodeURIComponent(process.argv[2]));
 	
+	if(process.argv[2] == 'first') {
+		//Shortcut for command line users rather than having to enter firstRun%3Dtrue
+		opts.firstRun = "true";
+	}
+	
 	//Read in the local app's config file
 
 	async.waterfall([

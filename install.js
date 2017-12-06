@@ -582,12 +582,23 @@ if(process.argv[2]) {
 						 } else {
 						   console.log('Completed all code insertion!');
 						   
-						   //Now we need to restart the MedImage Server service (particularly if we have changed the header
-						   //which is stored in RAM)
-						   restartParentServer(function(){ 
-						   		callback(null);
+						   //Ensure we reload the important bits of the server, header page and config
+						   // (but do not restart it - as it could be the server running this installer)
+						   console.log("reloadConfig:true");
+						   callback(null);
+				   
+						   /* However, if this was a standalone .exe installer, we would need code here to restart the 
+						   server independently. ie.
+						   var platform = getPlatform();
+						   if((platform == "win32")||(platform == "win64")) {
+							   //Now we need to restart the MedImage Server service (particularly if we have changed the header
+							   //which is stored in RAM)
+							   restartParentServer(function(){ 
+										callback(null);
 						   
-						   });
+							   });
+							}
+							*/
 						   
 						   
 						 }

@@ -2,37 +2,35 @@
   "author": "AtomJump.com",
   "name": "resize",
   "description": "An add-on to MedImage Server that automatically resizes images after they appear on the PC",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": false,
   "license": "Commercial",
   "installCommands": {
   	 "all": [
+  	 	  "npm install",
+  	  	  "node install.js first"
   	  ],
   	  "win32": [
   	  ],
   	  "win64": [
   	  ],
   	  "unix": [
-  	  	  "npm install",
-  	  	  "node install.js first"
   	  ],
   	  "mac": [
-  	  	  "npm install",
-  	  	  "node install.js first"
+  	  	 
   	  ]
   },
    "uninstallCommands": {
   	 "all": [
+  	 	   "node uninstall.js"
   	  ],
   	  "win32": [
   	  ],
   	  "win64": [
   	  ],
   	  "unix": [
-  	  	  "node uninstall.js"
   	  ],
   	  "mac": [
-  	  	  "node uninstall.js"
   	  ]
   }
 }

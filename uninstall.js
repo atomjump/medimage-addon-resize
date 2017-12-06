@@ -276,7 +276,26 @@ function restartParentServer(cb)
 }
 
 
-
+function getPlatform() {
+	var platform = process.platform;
+	if(verbose == true) console.log(process.platform);
+	var isWin = /^win/.test(platform);
+	if(verbose == true) console.log("IsWin=" + isWin);
+	if(isWin) {
+		if(process.arch == 'x64') {
+			return "win64";
+		} else {
+			return "win32";
+		}
+	} else {
+		if(platform == "darwin") {
+			return "mac";
+		} else {
+			return "unix";
+		}
+	
+	}
+}
 
 
 
@@ -391,12 +410,23 @@ async.waterfall([
 				 } else {
 				   console.log('Completed all code removal!');
 				   
-				   //Now we need to restart the MedImage Server service (particularly if we have changed the header
-				   //which is stored in RAM)
-				   restartParentServer(function(){ 
-					 		callback(null);
+				   //Ensure we reload the important bits of the server, header page and config
+				   // (but do not restart it - as it could be the server running this installer)
+				   console.log("reloadConfig:true");
+				   callback(null);
+				   
+				   /* However, if this was a standalone .exe installer, we would need code here to restart the 
+				   server independently. ie.
+				   var platform = getPlatform();
+				   if((platform == "win32")||(platform == "win64")) {
+					   //Now we need to restart the MedImage Server service (particularly if we have changed the header
+					   //which is stored in RAM)
+					   restartParentServer(function(){ 
+								callback(null);
 						   
-				   });
+					   });
+					}
+					*/
 				 }
 			   }
 		); //End of async eachOf all items

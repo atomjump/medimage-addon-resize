@@ -75,6 +75,7 @@ var jQueryDyn = function() {
 			//Get the current settings HTML snippet via an ajax request
 
 			uri = "/addon/resize-view-settings/";
+			jQuery('#resize').html("<img style='margin:8px;' src='../images/ajax-loader.gif' width='28' height='28'>");
 			jQuery.ajax({
 				url: uri,
 				success: function(data) {

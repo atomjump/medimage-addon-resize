@@ -3,6 +3,7 @@
 
 #define MyAppName "MedImage Server Add-on Resize"
 #define MyAppShortName "Resize"
+#define MyAppBaseName "medimage-addon-resize"
 #define MyAppGitName "resize"
 #define MyAppLCShortName "resize"
 #define MyAppVersion "0.2.3"

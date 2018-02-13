@@ -48,10 +48,10 @@ DisableProgramGroupPage=yes
 ;LicenseFile={#STARTDIR}\LICENSE.txt
 OutputDir={#STARTDIR}
 OutputBaseFilename={#MyAppShortName}Installer
-SetupIconFile={#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}
+SetupIconFile={#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}
 Compression=lzma
 SolidCompression=yes
-UninstallDisplayIcon={#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}
+UninstallDisplayIcon={#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}
 PrivilegesRequired=admin
 
 
@@ -61,8 +61,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 
 [Files]
-Source: "{#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#STARTDIR}\{#MyAppBaseName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 

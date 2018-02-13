@@ -3,7 +3,7 @@
 
 #define MyAppName "MedImage Server Add-on Resize"
 #define MyAppShortName "Resize32"
-#define MyAppBaseName "medimage-addon-resize"
+#define MyAppBaseName "resize"
 #define MyAppGitName "resize"
 #define MyAppLCShortName "resize32"
 #define MyAppLCBaseName "resize"
@@ -48,10 +48,10 @@ DisableProgramGroupPage=yes
 ;LicenseFile={#STARTDIR}\LICENSE.txt
 OutputDir={#STARTDIR}
 OutputBaseFilename={#MyAppShortName}Installer
-SetupIconFile={#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}
+SetupIconFile={#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}
 Compression=lzma
 SolidCompression=yes
-UninstallDisplayIcon={#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}
+UninstallDisplayIcon={#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}
 PrivilegesRequired=admin
 
 
@@ -61,8 +61,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 
 [Files]
-Source: "{#STARTDIR}\{#MyAppBaseName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#STARTDIR}\{#MyAppBaseName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#STARTDIR}\{#MyAppShortName}\winstaller\{#MyAppIcon}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#STARTDIR}\{#MyAppShortName}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 

@@ -106,11 +106,11 @@ var htmlToInsert = [
 			"selector": "#tab-content",
 			"newId": "resize",
 			"append": "<div class='tab-pane fade' id='resize'></div><script id='resizeScript'>" + JSON.parse(strFunctionInserter(jQueryDyn)) + "</script>"
-		},
+		}
 		
 		
 	];
-	/*
+	/* r
 		Or a remove example
 		{
 			"file": __dirname + "/../../public/components/header.html",

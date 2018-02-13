@@ -110,7 +110,7 @@ var htmlToInsert = [
 		
 		
 	];
-	/* r
+	/* 
 		Or a remove example
 		{
 			"file": __dirname + "/../../public/components/header.html",

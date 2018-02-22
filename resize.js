@@ -66,10 +66,30 @@ function readConfig(confFile, cb) {
 }
 
 
+function normalizeInclWinNetworks(path)
+{
+	//Tests to see if the path is a Windows network path first, if so, handle this case slightly differently
+	//to a normal upath.normalization.
+	//Run this before 
+	if((path[0] == "\\")&&(path[1] == "\\")) {
+		
+		return "\/" + upath.normalize(path);		//Prepend the first slash
+	} else {
+		if((path[0] == "\/")&&(path[1] == "\/")) {
+			//In unix style syntax, but still a windows style network path
+			return "\/" + upath.normalize(path);		//Prepend the first slash
+		} else {
+			return upath.normalize(path);
+		}
+	}
+
+}
+
+
 
 if(process.argv[2]) {
 
-  	var photoFileName = upath.normalize(process.argv[2]);
+  	var photoFileName = normalizeInclWinNetworks(process.argv[2]);
  	var readConfigFile = resizeConfigFile;
  	
  	if(verbose == true) console.log("Resizing photo file: " + photoFileName);

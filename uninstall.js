@@ -29,7 +29,7 @@ var exec = require('child_process').exec;
 
 var verbose = false;
 
-var thisAddOnConfigFile = __dirname + '/config/resize.json';
+var thisAddOnConfigFile = __dirname + '/config/patch.json';
 var medImageAddonConfig = __dirname + "/../config.json";
 
 var pm2Parent = '';		//Include a string if this is run on linux that represents the MedImage server to restart
@@ -54,8 +54,7 @@ function strFunctionInserter(func) {
 
 //Add-on content
 var pagesToRemove = [
-		__dirname + "/../../public/pages/resize-settings.html",
-		thisAddOnConfigFile
+		thisAddOnConfigFile		
 	];
 	//Keeping addon-settings because other addons may use that
 	
@@ -68,7 +67,7 @@ var jQueryDyn = function() {
 		jQuery('#resize-tab').click(function() {
 			//Get the current settings HTML snippet via an ajax request
 
-			uri = "/addon/resize-view-settings/";
+			uri = "/addon/patch/";
 			jQuery.ajax({
 				url: uri,
 				success: function(data) {
@@ -82,21 +81,6 @@ var jQueryDyn = function() {
 }	
 	
 var htmlToInsert = [
-		{
-			"file": __dirname + "/../../public/pages/addon-settings.html",
-			"selector": "#resize-tab",
-			"remove": true
-		},
-		{
-			"file": __dirname + "/../../public/pages/addon-settings.html",
-			"selector": "#resize",
-			"remove": true
-		},
-		{
-			"file": __dirname + "/../../public/pages/addon-settings.html",
-			"selector": "#resizeScript",
-			"remove": true
-		}
 	];
 	/*
 		Or a remove example
@@ -109,27 +93,8 @@ var htmlToInsert = [
 	*/
 
 var thisAppEventPhotoWritten = [
-								{
-									"addon": "Resize",
-									"runProcess": "node parentdir/addons/resize/resize.js param1",
-									"active": true
-								 }
                        		 	];
 var thisAppEventURLRequest = [
-                               {
-									"addon": "Resize",
-									"scriptURLName": "resize-set",
-									"runProcess": "node parentdir/addons/resize/install.js param1",
-									"waitForRequestFinish":  "addon-settings.html",
-									"active": true
-								},
-								{
-									"addon": "Resize",
-									"scriptURLName": "resize-view-settings",
-									"runProcess": "node parentdir/addons/resize/view-settings.js",
-									"waitForRequestFinish":  "resize-settings.html",
-									"active": true
-								}
                        		 ];
                        		 
 var outgoingOptions = {};

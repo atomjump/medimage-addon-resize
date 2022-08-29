@@ -3,11 +3,11 @@
 
 #define MyAppName "MedImage Server Add-on Resize"
 #define MyAppShortName "Resize32"
-#define MyAppBaseName "resize"
+#define MyAppBaseName "medimage-addon-resize"
 #define MyAppGitName "resize"
 #define MyAppLCShortName "resize32"
 #define MyAppLCBaseName "resize"
-#define MyAppVersion "0.2.5"
+#define MyAppVersion "0.3.0"
 #define MyAppPublisher "AtomJump"
 #define MyAppURL "http://medimage.co.nz"
 #define MyAppExeName "winstart-browser.bat"
@@ -17,12 +17,12 @@
 #define NSSM "nssm.exe"
 #define NSSM32 "nssm-x86.exe"
 #define NSSM64 "nssm.exe"
-#define NODE64 "node-v4.2.6-x64.msi"
-#define NODE "node-v4.2.6-x64.msi"
+#define NODE64 "node-v14.17.1-x64.msi"
+#define NODE "node-v14.17.1-x64.msi"
 
 
 ;Change this dir depending on where you are compiling from. Leave off the trailing slash
-#define STARTDIR "C:\test\buildSoftwareMedImage\MedImage-Addons\resize"
+#define STARTDIR "C:\medimage-dev-env\buildSoftwareMedImage\MedImage-Addons\resize"
 #define DEFAULTPHOTOSDIR "C:\medimage\photos"
 #define DEFAULTAPPDIR "medimage\addons\resize"
 

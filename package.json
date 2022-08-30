@@ -2,7 +2,7 @@
   "author": "AtomJump.com",
   "name": "medimage-addon-resize",
   "description": "An add-on to MedImage Server that automatically resizes images after they appear on the PC",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "scripts": {
     "install": ""
@@ -12,8 +12,11 @@
     "upath": "*",
     "querystring": "*",
     "async": "~2.6.1",
-    "fs-extra": ">=5.0.0",
+    "fs-extra": "*",
     "cheerio": "*"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.4"
   },
   "repository": {
     "type": "git",

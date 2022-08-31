@@ -551,7 +551,7 @@ if(process.argv[2]) {
 		},
 		function(callback) {
 			//And add any menus or any other html pages that need to be adjusted
-			//if(opts.firstRun === "true") {
+			if(opts.firstRun === "true") {
 				//We only want to do this on the first run from a full install
 			
 				
@@ -621,9 +621,9 @@ if(process.argv[2]) {
 				
 				
 				
-			//} else {	//Not the first run
-			//	callback(null);
-			//}
+			} else {	//Not the first run
+				callback(null);
+			}
 		}
 		
 	], function (err, result) {
